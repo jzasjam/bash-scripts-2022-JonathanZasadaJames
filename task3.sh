@@ -62,7 +62,7 @@ function RESTART(){
         ;;
         p | prize)
             echo "==================="
-            echo "Win A Prize!!!"
+            echo "Win A Prize!!"
             echo "==================="
             sudo bash bash.sh
         ;;
