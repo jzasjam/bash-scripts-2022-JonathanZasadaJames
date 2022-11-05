@@ -1,17 +1,36 @@
 #!/bin/bash
 
+: '
+- Automatic creation and rights management of a new user
+- Application of firewall rules
+- Extraction of monitoring information in a file
+- Conduct system management activities on a regular basis
+
+- Automated installation of a software
+'
 
 # Create an array of arguments/tasks to complete
 declare -A argument
-argument+=(["u | update"]="Update and Upgarde The Operating System")
 argument+=(["h | help"]="Get Some Help" )
-argument+=(["p | prize"]="Win A Prize")
-argument+=(["r | restart"]="Restart")
-argument+=(["w | www"]="Open A Web Page")
+argument+=(["u | update"]="Update and Upgrade The Operating System")
+argument+=(["i | install"]="**Install Packages")
+argument+=(["d | demo"]="See Bash Demo")
+argument+=(["db | database"]="**Database Management")
+argument+=(["us | user"]="**User Management")
+argument+=(["c | cpu"]="**CPU Monitor to Log")
+#argument+=(["r | restart"]="Restart")
+argument+=(["w | www"]="**Open A Web Page")
 argument+=(["x | exit"]="Quit / Exit")
 
+declare -A installs
+installs+=(["p | php"]="Install PHP")
+installs+=(["mdb | mariadb"]="Install Maria DB" )
+installs+=(["a | apache"]="Install Apache")
+installs+=(["wp | wordpress"]="Install Wordpress")
 
-# Get this filename to use in restart function and reference elsewhere
+
+
+# Get this file name to use in restart function and reference elsewhere
 thisFile="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
 function RESTART(){
     #echo -e "\n\n"
@@ -55,21 +74,28 @@ function RESTART(){
  # Case Statement Menu Selecting Task  
     case $task in
         h | help)
-            echo "==================="
-            echo "Help"
-            echo "==================="
-            echo "You Got First Prize"
+            bash help.sh
         ;;
-        p | prize)
-            echo "==================="
-            echo "Win A Prize!!!"
-            echo "==================="
-            sudo bash bash.sh
+        d | demo)
+            bash bash.sh "bashbook.txt "
         ;;
         r | restart)
             echo "==================="
             echo "Restarting"
             echo "==================="
+        ;;
+        i | install)
+            echo "==================="
+            echo "What Do You Want To Install?"
+            echo "==================="
+             # Loop through the array and print out the arguments and descriptions menu 
+            for key in "${!installs[@]}"; do
+                printf "${key} \t"
+                printf "${installs[${key}]} \n"
+            done
+            # Get User Input For Install
+            echo -e "\n\n> Select What To Install..."
+            read task
         ;;
         u | update)
             echo "==================="

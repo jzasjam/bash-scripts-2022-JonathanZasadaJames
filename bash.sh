@@ -1,11 +1,19 @@
 #!/bin/bash
 
+echo "==================="
+echo "Demo Bash Script"
+echo "==================="
+echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_examples/"
+# EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_examples/
+
 #Comment
 
 #Echo
     echo "Yo"
 
 #Add 2 numbers
+    echo -e "\nAdd 2 numbers"
+    echo -e "----------------------"
     ((sum=25+25))
     #Echo answer
     echo $sum
@@ -17,6 +25,8 @@
     '
 
 #While Loop
+    echo -e "\nWhile Loop"
+    echo -e "----------------------"
     valid=true
     count=1
     while [ $valid ] 
@@ -30,6 +40,8 @@
     done
 
 #For Loop
+    echo -e "\nFor Loop"
+    echo -e "----------------------"
     for (( counter=10; counter>0; counter-- ))
     do  
         echo -n "$counter "
@@ -37,11 +49,15 @@
     printf "\n"
 
 #Get User Input
+    echo -e "\nGet User Input"
+    echo -e "----------------------"
     echo "Enter Your Name"
     read name
     echo "Welcome $name to Bash Scripting"
 
 #If Statement
+    echo -e "\nIf Statement"
+    echo -e "----------------------"
     n=10
     if [ $n -lt 10 ];
     then
@@ -51,6 +67,8 @@
     fi
 
  #Case Statement
+    echo -e "\nCase Statement"
+    echo -e "----------------------"
     echo "Enter You Lucky Number"
     read n
     case $n in
@@ -65,12 +83,16 @@
     esac
 
  #Get Command Line Arguments
+    echo -e "\nGet Command Line Arguments"
+    echo -e "----------------------"
     echo "Total Arguments : $#"
     echo "1st Argument = $1"
     echo "2nd Argument = $2"   
 
 
  #Get Command Line Arguments with Names
+    echo -e "\nGet Command Line Arguments with Names"
+    echo -e "----------------------"
     for arg in "$@"
     do  
         #No Spaces around '=' eg: id=val
@@ -85,7 +107,9 @@
         ((result=x+y))
         echo "X+Y=$result"
 
-    #Combine String Variables
+#Combine String Variables
+    echo -e "\nCombine String Variables"
+    echo -e "----------------------"
     string1="Software Architecture"
     string2="Desgin Principles"
 
@@ -96,6 +120,8 @@
     echo $string3
 
 #Get Substring of String
+    echo -e "\nGet Substring of String"
+    echo -e "----------------------"
     str="Learn Linux with SADP"
     #String:Start Index:Num Chars
     subStr=${str:0:11}
@@ -106,6 +132,8 @@
     #echo: SADP
 
 #Add 2 Numbers
+    echo -e "\nAdd 2 Numbers"
+    echo -e "----------------------"
     echo "Enter First Number"
     read x
     echo "Enter Second Number"
@@ -114,6 +142,8 @@
     echo "Result = $sum"
 
 #Create A Function
+    echo -e "\nCreate A Function"
+    echo -e "----------------------"
     function F1()
     {
         echo "I Like SADP"
@@ -122,6 +152,8 @@
     F1
 
 #Function With Parameters
+    echo -e "\nFunction With Parameters"
+    echo -e "----------------------"
     Rectangle_Area(){
         area=$(($1*$2))
         echo "Area is : $area"
@@ -130,6 +162,8 @@
     Rectangle_Area 10 5
 
 #Pass Return Value From Function
+    echo -e "\nPass Return Value From Function"
+    echo -e "----------------------"
     function greeting(){
         str="Hello $name"
         echo $str
@@ -141,11 +175,15 @@
     echo "Return Value Of The Function Is: $val"
 
 #Make Directory
+    echo -e "\nMake Directory"
+    echo -e "----------------------"
     echo "Enter Directory Name"
     read newdir
     mkdir $newdir
 
 #Make Directory By Checking Existence
+    echo -e "\nMake Directory By Checking Existence"
+    echo -e "----------------------"
     echo "Enter Directory Name"
     read ndir
     if [ -d "$ndir" ] 
@@ -157,6 +195,8 @@
     fi
 
 #Check If File Exists
+    echo -e "\nCheck If File Exists"
+    echo -e "----------------------"
     filename=$1
     if [ -f "$filename" ]
     then
@@ -167,6 +207,8 @@
     fi
 
 #Read A File
+    echo -e "\nRead A File"
+    echo -e "----------------------"
     echo "Read A File $1"
     file="book.txt"
     #Will not read last line (leave blank)
@@ -175,6 +217,8 @@
     done < $file
 
 #Append To A File
+    echo -e "\nAppend To A File"
+    echo -e "----------------------"
     echo "Before Appending The File"
     cat book.txt
     echo "Dr Seuss">> book.txt
@@ -182,6 +226,8 @@
     cat book.txt
 
 #Remove A File
+    echo -e "\nRemove A File"
+    echo -e "----------------------"
     echo "Enter Filename To Remove"
     read fn
     rm $fn 
@@ -189,12 +235,21 @@
     #rm -i $fn 
 
 #Send Email
+    echo -e "\nSend Email"
+    echo -e "----------------------"
+    echo "Your Email >"
+    read email
+    echo "Subject >"
+    read subject
+    echo "Message >"
+    read message
+    echo $message | mail -s $subject $email
 #https://linuxhint.com/bash_script_send_email/
 #https://superuser.com/questions/1492929/how-to-use-mail-command-from-within-windows-linux-subsystem
 #https://askubuntu.com/questions/14685/what-does-package-package-has-no-installation-candidate-mean
-    Recipient="jonathan.zasada-james@student.shu.ac.uk"
-    Subject="Hello from Bash"
-    Message="You have succeeded in sending an email"
-    `mail -s $Subject $Recipient <<< $Message`
-    echo "Sent Mail To $Recipient"
+    #Recipient="jonathan.zasada-james@student.shu.ac.uk"
+    #Subject="Hello from Bash"
+    #Message="You have succeeded in sending an email"
+    #`mail -s $Subject $Recipient <<< $Message`
+    #echo "Sent Mail To $Recipient"
 
