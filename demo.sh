@@ -179,6 +179,8 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     echo -e "----------------------"
     echo "Enter Directory Name"
     read newdir
+    # `mkdir $newdir`
+    cd tests
     mkdir $newdir
 
 #Make Directory By Checking Existence
@@ -190,8 +192,10 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     then
         echo "Directory Exists"
     else
-        `mkdir $ndir`
-        echo "Direcotry Created"
+        
+        cd tests
+        mkdir $ndir
+        echo "Directory Created"
     fi
 
 #Check If File Exists
@@ -209,7 +213,10 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
 #Read A File
     echo -e "\nRead A File"
     echo -e "----------------------"
-    echo "Read A File $1"
+    echo "Read A File"
+    # If current directory is tests
+    if [  ]
+    cd tests
     file="book.txt"
     #Will not read last line (leave blank)
     while read line; do
@@ -220,6 +227,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     echo -e "\nAppend To A File"
     echo -e "----------------------"
     echo "Before Appending The File"
+    cd tests
     cat book.txt
     echo "Dr Seuss">> book.txt
     echo "After Appending The File"
