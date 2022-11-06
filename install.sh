@@ -4,6 +4,13 @@
 COLOR='\033[0;36m' # Cyan
 #printf "${COLOR}"
 
+# Get this file name to use in restart function and reference elsewhere
+thisFile="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
+function RESTART(){
+    clear
+    bash $thisFile 
+}
+
 # Create an array of install options
 i=0
 operations[$i]="ap  | apache    Install Apache"; ((i++))
@@ -42,9 +49,23 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
 # Case Statement Menu Selecting Task  
     case $task in
         mdb | mariadb)
-            if [ "$1" = NULL ]
+            
+            if [ -z "$1" ]
             then
-                echo 'Install Maria DB? (y/n)'
+                echo "Install: mariadb-server, mariadb-client & mysql_secure_installation"
+                echo "=================================="
+                echo "Current Version:"
+                echo "----------------"
+                sudo mariadb -Version  
+                echo "----------------"
+                echo "Current Status:"
+                echo "----------------"
+                sudo systemctl status mariadb
+                # ON WSL
+                sudo service mysql status
+                echo "----------------"
+                echo "Install Maria DB? (y/n)"
+                echo "----------------"
                 read confirmation;
             else
                 confirmation='y'
@@ -110,3 +131,17 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
         echo "Sorry, That Option Is Not Available"
         
     esac
+
+
+
+# Restart with menu (on enter) or end program if called by arguments
+if [ "$1" ] 
+then
+    echo "Task run in arguments complete - Bye!"
+else
+    echo -e "\n\n-----------------------"
+    echo "Press Enter To Continue >>>"
+    read x
+    
+    RESTART
+fi

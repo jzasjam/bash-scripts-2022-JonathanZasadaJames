@@ -109,7 +109,7 @@ function RESTART(){
             then
                 # If not available, install it 
                 echo "xdg-open could not be found"
-                sudo apt install xdg-utils
+                echo "y" | sudo apt install xdg-utils
             fi
             echo "Please Enter A URL >"
             read url
