@@ -47,7 +47,7 @@ fi
 task=$(echo $task | tr '[:upper:]' '[:lower:]')
 
 # Case Statement Menu Selecting Task  
-    case $task in 
+    case $task in
         mdb | mariadb)
             
             if [ -z "$1" ]
