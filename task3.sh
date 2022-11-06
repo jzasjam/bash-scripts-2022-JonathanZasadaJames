@@ -73,7 +73,7 @@ function RESTART(){
     task=$(echo $task | tr '[:upper:]' '[:lower:]')
 
  # Case Statement Menu Selecting Task  
-    case $task in
+    case $task in 
         h | help)
             bash help.sh $thisFile
         ;;
