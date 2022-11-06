@@ -110,10 +110,12 @@ function RESTART(){
                 # If not available, install it 
                 echo "xdg-open could not be found"
                 sudo apt install xdg-utils
-                wait
             fi
             echo "Please Enter A URL >"
             read url
+            # WSL? Open URL in default browser
+            explorer.exe $url
+            # Open URL in default browser
             xdg-open $url
             
         ;;
@@ -136,10 +138,6 @@ else
     echo -e "\n\n-----------------------"
     echo "Press Enter To Continue >>>"
     read x
-    # Sleep for 2 secs then restart the menu/script
-    #clear
-    #echo "Restarting..."
-    #sleep 1
     
     RESTART
 fi

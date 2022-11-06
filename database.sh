@@ -56,11 +56,13 @@ then
     sudo bash install.sh MariaDB
 fi
 
+# Perform a SQL Query
 function SQLQUERY(){
     # Run SQL Query
     sudo mysql -u root -e "$query"
 }
 
+# Show Database Users
 function SHOW_USERS(){
     # Show Users
     echo "----------------------"
@@ -71,8 +73,9 @@ function SHOW_USERS(){
     echo "----------------------"
 }
 
+# Display a users database permissions
 function SHOW_USER_PERMISSIONS(){
-    # Show Users
+    # Show User Permissions
     echo "----------------------"
     echo "CURRENT PERMISSIONS"
     echo "----------------------"
@@ -81,6 +84,7 @@ function SHOW_USER_PERMISSIONS(){
     echo "----------------------"
 }
 
+# Display the existing databases
 function SHOW_DATABASES(){
     # Show Databases
     echo "----------------------"
@@ -91,9 +95,8 @@ function SHOW_DATABASES(){
     echo "----------------------"
 }
 
-
+# Display a message and get user confirmation
 function CONFIRM(){
-     
     echo "----------------------"
     echo "CONFIRMATION"
     echo "----------------------"
@@ -108,6 +111,7 @@ function CONFIRM(){
     fi
 }
 
+# Display a warning message 
 function WARNING(){
     RED='\033[0;31m'
     BRed='\033[1;31m' #Bold Red
@@ -236,7 +240,7 @@ function WARNING(){
             clear
             echo "============================"
             echo "ADD USER TO DATABASE"
-            eecho "============================"
+            echo "============================"
             SHOW_USERS
             
             echo "Which User To Add: >"

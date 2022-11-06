@@ -2,14 +2,16 @@
 
 # Set Text Colour
 COLOR='\033[0;36m' # Cyan
-printf "${COLOR}"
+#printf "${COLOR}"
 
 # Create an array of install options
 i=0
-operations[$i]="p   | php       Install PHP"; ((i++))
-operations[$i]="mdb | mariadb   Install Maria DB"; ((i++))
 operations[$i]="ap  | apache    Install Apache"; ((i++))
-operations[$i]="wp  | wordpress Install Wordpress"; ((i++))
+operations[$i]="mdb | mariadb   Install Maria DB"; ((i++))
+operations[$i]="p   | php       Install PHP\n"; ((i++))
+
+operations[$i]="wp  | wordpress Install Wordpress\n"; ((i++))
+
 operations[$i]="x   | exit      Exit Install Menu"; ((i++))
 
 
@@ -54,22 +56,49 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "==================="
                 echo "Run mysql_secure_installation"
                 echo "==================="
-                sudo mysql_secure_installation
                 sudo systemctl restart mariadb
                 sudo systemctl enable mariadb
                 # ON WSL:https://linuxhandbook.com/system-has-not-been-booted-with-systemd/#:~:text=Linode-,How%20to%20fix%20'System%20has%20not%20been%20booted%20with%20systemd,commands%20have%20somewhat%20similar%20syntax.
-                sudo service mariadb start
+                sudo service mysql start
+
+                sudo mysql_secure_installation
+
                 echo "==================="
                 echo "Maria DB Installed"
                 echo "==================="
                 echo "Check Status:"
                 sudo systemctl status mariadb
                 # ON WSL
-                sudo service mariadb status
+                sudo service mysql status
                 echo "==================="
             else
                 echo 'Maria DB Not Installed'
             fi
+        ;;
+        ap | apache)
+            # Install Apache 
+            echo "y" | sudo apt install apache2
+            sudo apt install apache2 apache2-utils
+
+            # Enable Apache To Run On Startup
+            sudo systemctl enable apache2
+            # ON WSL
+            sudo service apache2 enable
+
+            # Install Lynx  
+            echo "y" | sudo apt install lynx
+
+            # Restart Apache 
+            sudo systemctl restart apache2
+            # ON WSL
+            sudo service apache2 restart
+
+            # Check Apache Status
+            sudo systemctl status apache2
+            sudo apachectl status
+            # ON WSL
+            sudo service apache2 status
+
         ;;
         x | exit)
             echo "==================="
