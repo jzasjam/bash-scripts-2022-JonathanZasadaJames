@@ -30,7 +30,7 @@ operations[$i]="db | database   Database Management\n"; ((i++))
 operations[$i]="w  | www        **Open A Web Page\n"; ((i++))
 
 #operations[$i]="r  | restart    Restart"; ((i++))
-operationsv[$i]="x | exit       Quit / Exit"; ((i++))
+operations[$i]="x | exit       Quit / Exit"; ((i++))
 
 
 # Get this file name to use in restart function and reference elsewhere

@@ -250,6 +250,11 @@ function WARNING(){
             echo "Which Database To Add User: >"
             echo "----------------------"
             read db_name
+
+            # Get confirmation
+            str="add user $user_name to database $db_name"
+            CONFIRM
+
             query="GRANT ALL PRIVILEGES ON $db_name.* TO '$user_name'@'localhost'; FLUSH PRIVILEGES;"
             SQLQUERY
             clear
@@ -278,6 +283,11 @@ function WARNING(){
             echo "----------------------"
             echo "Which Database To Remove User:"
             read db_name
+
+            # Get confirmation
+            str="remove user $user_name from database $db_name"
+            CONFIRM
+
             query="REVOKE ALL PRIVILEGES ON $db_name.* FROM '$user_name'@'localhost'; FLUSH PRIVILEGES;"
             SQLQUERY
             clear
