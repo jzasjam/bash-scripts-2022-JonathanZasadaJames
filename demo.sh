@@ -103,15 +103,15 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
             Y) y=$val;;
             *)
         esac
-        done
-        ((result=x+y))
-        echo "X+Y=$result"
+    done
+    ((result=x+y))
+    echo "X+Y=$result"
 
 #Combine String Variables
     echo -e "\nCombine String Variables"
     echo -e "----------------------"
     string1="Software Architecture"
-    string2="Desgin Principles"
+    string2="Design Principles"
 
     string3="$string1 & $string2"
     echo "$string3"
@@ -253,3 +253,30 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     #`mail -s $Subject $Recipient <<< $Message`
     #echo "Sent Mail To $Recipient"
 
+#Parse Current Date
+    echo -e "\nParse Current Date"
+    echo -e "----------------------"
+    Year=`date +%Y`
+    Month=`date +%m`
+    Day=`date +%d`
+    Hour=`date +%H`
+    Minute=`date +%M`
+    Second=`date +%S`
+    echo `date`
+    echo "Current Date is: $Day-$Month-$Year"
+    echo "Current Time is: $Hour:$Minute:$Second"
+
+#Wait Command
+    echo -e "\nWait Command"
+    echo -e "----------------------"
+    echo "Wait command" &
+    process_id=$!
+    wait $process_id
+    echo "Exited with status $?"
+
+#Sleep Command
+    echo -e "\nSleep Command"
+    echo -e "----------------------"
+    echo "Sleeping for 5 seconds"
+    sleep 5
+    echo "Woke Up"

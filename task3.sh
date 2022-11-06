@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set Text Colour
+NC='\033[0m' # No Color
+printf "${NC}"
+
 : '
 - Automatic creation and rights management of a new user
 - Application of firewall rules
@@ -10,24 +14,23 @@
 '
 
 # Create an array of arguments/tasks to complete
-declare -A argument
-argument+=(["h | help"]="Get Some Help" )
-argument+=(["u | update"]="Update and Upgrade The Operating System")
-argument+=(["i | install"]="**Install Packages")
-argument+=(["d | demo"]="See Bash Demo")
-argument+=(["db | database"]="**Database Management")
-argument+=(["us | user"]="**User Management")
-argument+=(["c | cpu"]="**CPU Monitor to Log")
-#argument+=(["r | restart"]="Restart")
-argument+=(["w | www"]="**Open A Web Page")
-argument+=(["x | exit"]="Quit / Exit")
+i=0
+operations[$i]="h  | help       Get Some Help"; ((i++))
+operations[$i]="d  | demo       See Bash Demo\n"; ((i++))
 
-declare -A installs
-installs+=(["p | php"]="Install PHP")
-installs+=(["mdb | mariadb"]="Install Maria DB" )
-installs+=(["a | apache"]="Install Apache")
-installs+=(["wp | wordpress"]="Install Wordpress")
+operations[$i]="u  | update     Update and Upgrade The Operating System"; ((i++))
+operations[$i]="i  | install    **Install Packages\n"; ((i++))
 
+operations[$i]="db | database   Database Management\n"; ((i++))
+
+#operations[$i]="us | user       **User Management\n"; ((i++))
+
+#operations[$i]="c  | cpu        **CPU Monitor to Log\n"; ((i++))
+
+operations[$i]="w  | www        **Open A Web Page\n"; ((i++))
+
+#operations[$i]="r  | restart    Restart"; ((i++))
+operationsv[$i]="x | exit       Quit / Exit"; ((i++))
 
 
 # Get this file name to use in restart function and reference elsewhere
@@ -48,36 +51,37 @@ function RESTART(){
         echo "=================================================================="
         echo "NOTE: Use 'bash $thisFile {argument}' to start automatically"
 
-        echo "----------------------"
-        echo -e "Argument(s) \t Description"
-        echo "----------------------"
+        echo "-------------------------------------"
+        echo -e "Argument(s)\tDescription"
+        echo "-------------------------------------"
 
         # Loop through the array and print out the arguments and descriptions menu 
-        for key in "${!argument[@]}"; do
-            printf "${key} \t"
-            printf "${argument[${key}]} \n"
+        for key in "${!operations[@]}"; do
+            printf "${operations[${key}]} \n"
         done
 
         # Get User Input For Task
         echo -e "\n\n> Select A Task (Enter An Argument)..."
-        read task
-        # Convert entered task to lower case
-        task=$(echo $task | tr '[:upper:]' '[:lower:]')
-        
+        read task 
         clear
     else
         # If Command Line Argument Provided
         echo "> TASK SELECTED = $task"
     fi
 
+# Convert entered task to lower case
+    task=$(echo $task | tr '[:upper:]' '[:lower:]')
 
  # Case Statement Menu Selecting Task  
     case $task in
         h | help)
-            bash help.sh
+            bash help.sh $thisFile
         ;;
         d | demo)
-            bash bash.sh "bashbook.txt "
+            bash demo.sh "bashbook.txt "
+        ;;
+        db | database)
+            sudo bash database.sh
         ;;
         r | restart)
             echo "==================="
@@ -85,17 +89,7 @@ function RESTART(){
             echo "==================="
         ;;
         i | install)
-            echo "==================="
-            echo "What Do You Want To Install?"
-            echo "==================="
-             # Loop through the array and print out the arguments and descriptions menu 
-            for key in "${!installs[@]}"; do
-                printf "${key} \t"
-                printf "${installs[${key}]} \n"
-            done
-            # Get User Input For Install
-            echo -e "\n\n> Select What To Install..."
-            read task
+            sudo bash install.sh $2
         ;;
         u | update)
             echo "==================="
