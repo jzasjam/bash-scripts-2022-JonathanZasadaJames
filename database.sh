@@ -56,21 +56,28 @@ then
     sudo bash install.sh MariaDB
 fi
 
+function SQLQUERY(){
+    # Run SQL Query
+    sudo mysql -u root -e "$query"
+}
+
 function SHOW_USERS(){
     # Show Users
     echo "----------------------"
     echo "CURRENT USERS"
     echo "----------------------"
-    sudo mysql -u root -e "SELECT user FROM mysql.user;"
+    query="SELECT user FROM mysql.user;"
+    SQLQUERY
     echo "----------------------"
 }
 
 function SHOW_USER_PERMISSIONS(){
     # Show Users
     echo "----------------------"
-    echo "CURRENT USERS"
+    echo "CURRENT PERMISSIONS"
     echo "----------------------"
-    sudo mysql -u root -e "SHOW GRANTS FOR $user_name@'localhost';"
+    query="SHOW GRANTS FOR $user_name@'localhost';"
+    SQLQUERY
     echo "----------------------"
 }
 
@@ -79,18 +86,11 @@ function SHOW_DATABASES(){
     echo "----------------------"
     echo "CURRENT DATABASES"
     echo "----------------------"
-    sudo mysql -u root -e "SHOW DATABASES;"
+    query="SHOW DATABASES;"
+    SQLQUERY
     echo "----------------------"
 }
 
-function SQLQUERY(){
-    # Run SQL Query
-    echo "----------------------"
-    echo "SQL QUERY"
-    echo "----------------------"
-    sudo mysql -u root -e "$query"
-    echo "----------------------"
-}
 
 function CONFIRM(){
      
@@ -278,7 +278,8 @@ function WARNING(){
             echo "----------------------"
             echo "Which Database To Remove User:"
             read db_name
-            sudo mysql -u root -e "REVOKE ALL PRIVILEGES ON $db_name.* FROM '$user_name'@'localhost'; FLUSH PRIVILEGES;"
+            query="REVOKE ALL PRIVILEGES ON $db_name.* FROM '$user_name'@'localhost'; FLUSH PRIVILEGES;"
+            SQLQUERY
             clear
 
             echo "----------------------"
