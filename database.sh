@@ -65,12 +65,30 @@ function SHOW_USERS(){
     echo "----------------------"
 }
 
+function SHOW_USER_PERMISSIONS(){
+    # Show Users
+    echo "----------------------"
+    echo "CURRENT USERS"
+    echo "----------------------"
+    sudo mysql -u root -e "SHOW GRANTS FOR $user_name@'localhost';"
+    echo "----------------------"
+}
+
 function SHOW_DATABASES(){
     # Show Databases
     echo "----------------------"
     echo "CURRENT DATABASES"
     echo "----------------------"
     sudo mysql -u root -e "SHOW DATABASES;"
+    echo "----------------------"
+}
+
+function SQLQUERY(){
+    # Run SQL Query
+    echo "----------------------"
+    echo "SQL QUERY"
+    echo "----------------------"
+    sudo mysql -u root -e "$query"
     echo "----------------------"
 }
 
@@ -120,7 +138,8 @@ function WARNING(){
             str="create database $db_name"
             CONFIRM
             if [ "$db_name" != "" ]; then
-                sudo mysql -u root -e "CREATE DATABASE $db_name;"
+                query="CREATE DATABASE $db_name;"
+                SQLQUERY
                 clear
             else
                 clear
@@ -130,7 +149,7 @@ function WARNING(){
             SHOW_DATABASES
         ;;
         # Drop/Delete a Database
-        ddb | dropdb)
+        d | drop)
             clear
             echo "============================"
             echo "DROP/DELETE A DATABASE"
@@ -144,7 +163,8 @@ function WARNING(){
             CONFIRM
             if [ "$db_name" != "" ]; 
             then
-                sudo mysql -u root -e "DROP DATABASE $db_name;"
+                query="DROP DATABASE $db_name;"
+                SQLQUERY
                 clear
             else
                 clear
@@ -168,6 +188,7 @@ function WARNING(){
             echo "Enter New User Name: >"
             echo "----------------------"
             read user_name
+            echo "----------------------"
             echo "Enter New User Password: >"
             echo "----------------------"
             read user_password
@@ -177,7 +198,8 @@ function WARNING(){
             if [ "$user_name" != "" ] && [ "$user_password" != "" ]
             then
                 # Create User
-                sudo mysql -u root -e "CREATE USER '$user_name'@'localhost' IDENTIFIED BY '$user_password';"
+                query="CREATE USER '$user_name'@'localhost' IDENTIFIED BY '$user_password';"
+                SQLQUERY
             else
                 clear
                 warning="User name and password cannot be empty"
@@ -199,8 +221,9 @@ function WARNING(){
             CONFIRM
             if [ "$user_name" != "" ]; 
             then
-                sudo mysql -u root -e "DROP USER $user_name@'localhost';"
+                query="DROP USER $user_name@'localhost';"
                 #clear
+                SQLQUERY
             else
                 clear
                 warning="User name cannot be empty"
@@ -215,21 +238,26 @@ function WARNING(){
             echo "ADD USER TO DATABASE"
             eecho "============================"
             SHOW_USERS
+            
             echo "Which User To Add: >"
             echo "----------------------"
             read user_name
             clear
-            sudo mysql -u root -e "SHOW GRANTS FOR $user_name@'localhost';"
+            SHOW_USER_PERMISSIONS
             SHOW_DATABASES
+
+            echo "----------------------"
             echo "Which Database To Add User: >"
             echo "----------------------"
             read db_name
-            sudo mysql -u root -e "GRANT ALL PRIVILEGES ON $db_name.* TO '$user_name'@'localhost'; FLUSH PRIVILEGES;"
+            query="GRANT ALL PRIVILEGES ON $db_name.* TO '$user_name'@'localhost'; FLUSH PRIVILEGES;"
+            SQLQUERY
             clear
+
             echo "----------------------"
             echo "Updated Permissions: >"
             echo "----------------------"
-            sudo mysql -u root -e "SHOW GRANTS FOR $user_name@'localhost';"
+            SHOW_USER_PERMISSIONS
         ;;
         
         # Remove A User From A Database
@@ -239,20 +267,24 @@ function WARNING(){
             echo "REMOVE USER FROM DATABASE"
             echo "============================"
             SHOW_USERS
+
             echo "Whch User To Remove: >"
             echo "----------------------"
             read user_name
             clear
-            sudo mysql -u root -e "SHOW GRANTS FOR $user_name@'localhost';"
+            SHOW_USER_PERMISSIONS
             SHOW_DATABASES
+
+            echo "----------------------"
             echo "Which Database To Remove User:"
             read db_name
             sudo mysql -u root -e "REVOKE ALL PRIVILEGES ON $db_name.* FROM '$user_name'@'localhost'; FLUSH PRIVILEGES;"
             clear
+
             echo "----------------------"
             echo "Updated Permissions: >"
             echo "----------------------"
-            sudo mysql -u root -e "SHOW GRANTS FOR $user_name@'localhost';"
+            SHOW_USER_PERMISSIONS
         ;;
         x | exit)
             echo "==================="
