@@ -71,7 +71,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 then
                     sudo systemctl status mariadb
                 else
-                    # ON WSL
+                    # ON WSL: https://linuxhandbook.com/system-has-not-been-booted-with-systemd/#:~:text=Linode-,How%20to%20fix%20'System%20has%20not%20been%20booted%20with%20systemd,commands%20have%20somewhat%20similar%20syntax.
                     sudo service mysql status
                 fi
                 echo "----------------"
@@ -98,7 +98,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                     sudo systemctl start mariadb
                     sudo systemctl enable mariadb
                 else
-                    # ON WSL:https://linuxhandbook.com/system-has-not-been-booted-with-systemd/#:~:text=Linode-,How%20to%20fix%20'System%20has%20not%20been%20booted%20with%20systemd,commands%20have%20somewhat%20similar%20syntax.
+                    # ON WSL
                     sudo service mysql start
                 fi
                 echo "-------------------"
@@ -110,7 +110,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 then
                     sudo systemctl restart mariadb
                 else
-                    # ON WSL:https://linuxhandbook.com/system-has-not-been-booted-with-systemd/#:~:text=Linode-,How%20to%20fix%20'System%20has%20not%20been%20booted%20with%20systemd,commands%20have%20somewhat%20similar%20syntax.
+                    # ON WSL
                     sudo service mysql restart
                 fi
 
@@ -135,8 +135,9 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo 'Install Cancelled'
             fi
         ;;
-        a | apache)
 
+
+        a | apache)
             # If command line argument not provided to start install, show details
             if [ -z "$1" ]
             then
@@ -215,7 +216,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 fi
                 sudo apachectl status
                 echo "==================="
-
+            
                 echo "Want to view http://localhost? (y/n)"
                 read confirmation;
 
@@ -224,11 +225,24 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                     sudo bash load-www.sh http://localhost
                 fi
 
+                # Offer to create custom home page
+                echo "Want to customise your homepage? (y/n)"
+                read confirmation;
+
+                if [ "$confirmation" = "y" ]
+                then
+                    sudo bash create-homepage.sh
+                fi
+
+
+
             else
                 echo 'Install Cancelled'
             fi
 
         ;;
+
+
         p | php)
                 
                 # If command line argument not provided to start install, show details
@@ -267,7 +281,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
 
                     echo "y" | sudo apt install ghostscript libapache2-mod-php php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip
                     
-                    # Restart Apache & get status
+                    # Restart Apache 
                     if ! command -v systemctl &> /dev/null
                     then
                         sudo systemctl restart apache2
@@ -282,10 +296,24 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                     echo "Current Version:"
                     echo "----------------"
                     php -v  
+
+                    # Create phpinfo.php
+                    echo "----------------"
+                    echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+                    echo "----------------"
+                    echo "Want to view http://localhost/phpinfo.php? (y/n)"
+                    read confirmation;
+                    if [ "$confirmation" = "y" ]
+                    then
+                        sudo bash load-www.sh http://localhost/phpinfo.php
+                    fi
+                    
                 else
                     echo 'Install Cancelled'
                 fi
         ;;
+
+        
         wp | wordpress)
 
             # If command line argument not provided to start install, show details
@@ -389,7 +417,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "-------------------"
                 echo "Wordpress Config File Created"
                 echo "-------------------"
-                cat wp-config.php
+                cat /var/www/html/wp/wp-config.php
                 echo "==================="
 
 

@@ -50,6 +50,28 @@ function SHOW_DATABASES(){
     SQLQUERY
     echo "----------------------"
 }
+# Display the existing databases
+function SHOW_TABLES(){
+    # Show Tables
+    echo "----------------------"
+    echo "CURRENT TABLES"
+    echo "----------------------"
+    query="USE $db_name;"
+    query+="SHOW TABLES;"
+    SQLQUERY
+    echo "----------------------"
+}
+# Display database table columns
+function SHOW_COLUMNS(){
+    # Show Columns
+    echo "----------------------"
+    echo "CURRENT COLUMNS"
+    echo "----------------------"
+    query="USE $db_name;"
+    query+="SHOW COLUMNS FROM $table_name;"
+    SQLQUERY
+    echo "----------------------"
+}
 
 # Display a message and get user confirmation
 function CONFIRM(){
@@ -94,8 +116,15 @@ operations[$i]="su   | showusers    Show Users"; ((i++))
 operations[$i]="cu   | createuser   Create User"; ((i++))
 operations[$i]="du   | dropuser     Drop/Delete User\n"; ((i++))
 
-operations[$i]="dbu  | adduser      Add User to DB"; ((i++))
-operations[$i]="dbru | removeuser   Remove User from DB\n"; ((i++))
+operations[$i]="st   | showtables   Show Tables for a Database"; ((i++))
+operations[$i]="ct   | createtable  Create Table"; ((i++))
+operations[$i]="dt   | droptable    Drop/Delete Table\n"; ((i++))
+
+operations[$i]="col  | columns      Show Table Columns"; ((i++))
+operations[$i]="sel  | select       Select/Show Table Contents\n"; ((i++))
+
+operations[$i]="dbu  | adduser      Add User to a Database"; ((i++))
+operations[$i]="dbru | removeuser   Remove User from a Database\n"; ((i++))
 
 #operations[$i]="t    | tables       Create Tables"; ((i++))
 operations[$i]="x    | exit         Exit Database Menu"; ((i++))
@@ -331,6 +360,112 @@ fi
             echo "----------------------"
             SHOW_USER_PERMISSIONS
         ;;
+        # Show The Existing Database Tables
+        st | showtables)
+            clear
+            SHOW_DATABASES
+            echo "----------------------"
+            echo "Which Database To Show Tables:"
+            read db_name
+            SHOW_TABLES
+        ;;
+        
+        # Create A New Database Table
+        ct | createtable)
+            clear
+            echo "============================"
+            echo "CREATE NEW TABLE"
+            echo "============================"
+            SHOW_DATABASES
+            echo "----------------------"
+            echo "Which Database To Create Table:"
+            read db_name
+            SHOW_TABLES
+            echo "----------------------"
+            echo "Enter New Table Name:"
+            read table_name
+            # Get confirmation (str is description of operation used in confirmation message) 
+            str="create table $table_name"
+            CONFIRM
+            if [ "$table_name" != "" ]; 
+            then
+                query="CREATE TABLE $db_name.$table_name (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, name VARCHAR(30) NOT NULL, email VARCHAR(50), reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);"
+                SQLQUERY
+            else
+                clear
+                warning="Table name cannot be empty"
+                WARNING
+            fi
+            SHOW_TABLES
+        ;;
+
+        # Drop/Delete a Database Table
+        dt | droptable)
+            clear
+            echo "============================"
+            echo "DROP/DELETE A DATABASE TABLE"
+            echo "============================"
+            SHOW_DATABASES
+            echo "----------------------"
+            echo "Which Database To Drop Table:"
+            read db_name
+            SHOW_TABLES
+            echo "----------------------"
+            echo "Which Table To Drop:"
+            read table_name
+            # Get confirmation (str is description of operation used in confirmation message) 
+            str="drop/delete table $table_name"
+            CONFIRM
+            if [ "$table_name" != "" ]; 
+            then
+                query="DROP TABLE $db_name.$table_name;"
+                SQLQUERY
+            else
+                clear
+                warning="Table name cannot be empty"
+                WARNING
+            fi
+            SHOW_TABLES
+        ;;
+        # Show The Existing Database Table Columns
+        col | columns)
+            clear
+            echo "============================"
+            echo "SHOW DATABASE TABLE COLUMNS"
+            echo "============================"
+            SHOW_DATABASES
+            echo "----------------------"
+            echo "Which Database To Show Table Columns:"
+            read db_name
+            SHOW_TABLES
+            echo "----------------------"
+            echo "Which Table To Show Columns:"
+            read table_name
+            SHOW_COLUMNS
+        ;;
+        # Select Data From A Database Table
+        sel | select)
+            clear
+            echo "============================"
+            echo "SELECT DATA FROM DATABASE TABLE"
+            echo "============================"
+            SHOW_DATABASES
+            echo "----------------------"
+            echo "Which Database To Select Data From:"
+            read db_name
+            SHOW_TABLES
+            echo "----------------------"
+            echo "Which Table To Select Data From:"
+            read table_name
+            SHOW_COLUMNS
+            echo "----------------------"
+            echo "Which Columns To Select Data From (use comma between multiple or use * for all):"
+            read column_name
+            query="USE $db_name;"
+            query+="SELECT $column_name FROM $table_name;"
+            SQLQUERY
+        ;;
+
         x | exit)
             echo "==================="
             echo "Leaving Database Management!"

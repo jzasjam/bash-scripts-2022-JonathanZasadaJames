@@ -18,9 +18,10 @@ i=0
 operations[$i]="h  | help       Get Some Help"; ((i++))
 operations[$i]="d  | demo       See Bash Demo\n"; ((i++))
 
-operations[$i]="u  | update     Update and Upgrade The Operating System"; ((i++))
-operations[$i]="i  | install    **Install Packages"; ((i++))
-operations[$i]="db | database   Database Management\n"; ((i++))
+operations[$i]="u  | update     Update and Upgrade"; ((i++))
+operations[$i]="i  | install    Install Packages"; ((i++))
+operations[$i]="db | database   Database Management"; ((i++))
+operations[$i]="hp | homepage   Create Homepage\n"; ((i++))
 
 #operations[$i]="us | user       **User Management\n"; ((i++))
 
@@ -83,6 +84,9 @@ function RESTART(){
         ;;
         db | database)
             sudo bash database.sh
+        ;;
+        hp | homepage)
+            sudo bash create-homepage.sh
         ;;
         i | install)
             sudo bash install.sh $2

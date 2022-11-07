@@ -228,7 +228,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     echo "Before Appending The File"
     cd tests
     cat book.txt
-    echo "Dr Seuss">> book.txt
+    echo "Dr Seuss" >> book.txt
     echo "After Appending The File"
     cat book.txt
 
