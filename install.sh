@@ -265,8 +265,17 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                     # Install PHP 
                     #echo "y" | sudo apt-get install php php-mysql php-fpm php-curl php-gd php-intl php-mbstring php-soap php-xml php-xmlrpc php-zip
 
-                    echo "y" | sudo apt install ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip
+                    echo "y" | sudo apt install ghostscript libapache2-mod-php php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip
                     
+                    # Restart Apache & get status
+                    if ! command -v systemctl &> /dev/null
+                    then
+                        sudo systemctl restart apache2
+                    else
+                        # ON WSL
+                        sudo service apache2 restart
+                    fi
+
                     echo "==================="
                     echo "PHP Installed"
                     echo "==================="
