@@ -19,18 +19,18 @@ operations[$i]="h  | help       Get Some Help"; ((i++))
 operations[$i]="d  | demo       See Bash Demo\n"; ((i++))
 
 operations[$i]="u  | update     Update and Upgrade The Operating System"; ((i++))
-operations[$i]="i  | install    **Install Packages\n"; ((i++))
-
+operations[$i]="i  | install    **Install Packages"; ((i++))
 operations[$i]="db | database   Database Management\n"; ((i++))
 
 #operations[$i]="us | user       **User Management\n"; ((i++))
 
 #operations[$i]="c  | cpu        **CPU Monitor to Log\n"; ((i++))
 
-operations[$i]="w  | www        **Open A Web Page\n"; ((i++))
 
-#operations[$i]="r  | restart    Restart"; ((i++))
-operations[$i]="x | exit       Quit / Exit"; ((i++))
+#operations[$i]="c  | cpu        **Design Your Index"; ((i++))
+operations[$i]="w  | www        Open A Web Page\n"; ((i++))
+
+operations[$i]="x  | exit       Quit / Exit"; ((i++))
 
 
 # Get this file name to use in restart function and reference elsewhere
@@ -43,9 +43,10 @@ function RESTART(){
 
 # See If Command Line Argument Provided
     task=$1
-    if test -z "$task" 
+    if [ -z "$task" ]
     then
         # If No Command Line Argument Provided
+        clear
         echo "=================================================================="
         echo "   AVAILABLE TASKS"
         echo "=================================================================="
@@ -83,11 +84,6 @@ function RESTART(){
         db | database)
             sudo bash database.sh
         ;;
-        r | restart)
-            echo "==================="
-            echo "Restarting"
-            echo "==================="
-        ;;
         i | install)
             sudo bash install.sh $2
         ;;
@@ -101,23 +97,7 @@ function RESTART(){
             echo "==================="
         ;;
         w | www)
-            echo "==================="
-            echo "Visit A Web Page"
-            echo "==================="
-            # Check if command is available
-            if ! command -v xdg-open &> /dev/null
-            then
-                # If not available, install it 
-                echo "xdg-open could not be found"
-                echo "y" | sudo apt install xdg-utils
-            fi
-            echo "Please Enter A URL >"
-            read url
-            # WSL? Open URL in default browser
-            explorer.exe $url
-            # Open URL in default browser
-            xdg-open $url
-            
+            sudo bash load-www.sh $2
         ;;
         x | exit)
             echo "==================="

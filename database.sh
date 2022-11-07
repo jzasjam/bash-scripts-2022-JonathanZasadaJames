@@ -11,50 +11,6 @@ function RESTART(){
     bash $thisFile 
 }
 
-# Intoduction Message
-echo "=============================="
-echo "Database Management"
-echo "=============================="
-echo "-------------------------------------"
-printf "Argument(s)         Description\n"
-echo "-------------------------------------"
-# Create an array of database operations to complete
-i=0
-operations[$i]="s    | show         Show Databases"; ((i++))
-operations[$i]="c    | create       Create Database"; ((i++))
-operations[$i]="d    | drop         Drop/Delete Database\n"; ((i++))
-
-operations[$i]="su   | showusers    Show Users"; ((i++))
-operations[$i]="cu   | createuser   Create User"; ((i++))
-operations[$i]="du   | dropuser     Drop/Delete User\n"; ((i++))
-
-operations[$i]="dbu  | adduser      Add User to DB"; ((i++))
-operations[$i]="dbru | removeuser   Remove User from DB\n"; ((i++))
-
-#operations[$i]="t    | tables       Create Tables"; ((i++))
-operations[$i]="x    | exit         Exit Database Menu"; ((i++))
-
-# Display Menu
-# Loop through the array and print out the operations menu 
-for key in "${!operations[@]}"; do
-    printf "${operations[${key}]} \n"
-done
-
-# Get User Input For Task
-echo -e "\n\n> Select A Task (Enter An Argument)..."
-read task
-
-#If MariaDB is not installed, install it
-if ! command -v mysql &> /dev/null
-then
-    echo "To continue, MariaDB must be installed"
-    echo "-------------------------------------"
-    echo 'Install Maria DB? (y/n)'
-    read confirmation;
-
-    # Install MariaDB
-    sudo bash install.sh MariaDB
-fi
 
 # Perform a SQL Query
 function SQLQUERY(){
@@ -103,7 +59,7 @@ function CONFIRM(){
     echo "Are you sure you want to $str? (y/n)"
     read confirmation;
 
-    if [ $confirmation != "y" ]
+    if [ "$confirmation" != "y" ]
     then
         RESTART
     else
@@ -119,6 +75,62 @@ function WARNING(){
     printf "WARNING: $warning"
     printf "${COLOR}\n"   
 }
+
+
+# Intoduction Message
+echo "=============================="
+echo "Database Management"
+echo "=============================="
+echo "-------------------------------------"
+printf "Argument(s)         Description\n"
+echo "-------------------------------------"
+# Create an array of database operations to complete
+i=0
+operations[$i]="s    | show         Show Databases"; ((i++))
+operations[$i]="c    | create       Create Database"; ((i++))
+operations[$i]="d    | drop         Drop/Delete Database\n"; ((i++))
+
+operations[$i]="su   | showusers    Show Users"; ((i++))
+operations[$i]="cu   | createuser   Create User"; ((i++))
+operations[$i]="du   | dropuser     Drop/Delete User\n"; ((i++))
+
+operations[$i]="dbu  | adduser      Add User to DB"; ((i++))
+operations[$i]="dbru | removeuser   Remove User from DB\n"; ((i++))
+
+#operations[$i]="t    | tables       Create Tables"; ((i++))
+operations[$i]="x    | exit         Exit Database Menu"; ((i++))
+
+# Display Menu
+# Loop through the array and print out the operations menu 
+for key in "${!operations[@]}"; do
+    printf "${operations[${key}]} \n"
+done
+
+# Get User Input For Task
+echo -e "\n\n> Select A Task (Enter An Argument)..."
+read task
+
+#If MariaDB is not installed, install it
+if ! command -v mysql &> /dev/null
+then
+    echo "To continue, MariaDB must be installed"
+    echo "-------------------------------------"
+    str="Install Maria DB"
+    CONFIRM
+    read confirmation;
+
+    # Install MariaDB
+    sudo bash install.sh MariaDB
+else
+    # If MariaDB is installed, start service
+    if ! command -v systemctl &> /dev/null
+    then
+        sudo systemctl start mariadb
+    else
+        # ON WSL
+        sudo service mysql start
+    fi
+fi
 
 
 # Case Statement Selecting Task  
@@ -192,10 +204,28 @@ function WARNING(){
             echo "Enter New User Name: >"
             echo "----------------------"
             read user_name
-            echo "----------------------"
-            echo "Enter New User Password: >"
-            echo "----------------------"
-            read user_password
+            
+            # Confirm passwords are the same
+            while [ true ] 
+            do
+                echo "----------------------"
+                echo "Enter New User Password: >"
+                echo "----------------------"
+                read -s user_password
+                echo
+                echo "Repeat Password: >"
+                read -s user_password2
+                echo
+                if [ "$user_password" != "$user_password2" ]; 
+                then
+                    clear
+                    warning="Passwords do not match"
+                    WARNING
+                else
+                    break
+                fi  
+            done
+
             # Get confirmation (str is description of operation used in confirmation message) 
             str="create user $user_name"
             CONFIRM

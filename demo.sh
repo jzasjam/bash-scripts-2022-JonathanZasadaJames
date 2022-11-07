@@ -6,25 +6,25 @@ echo "==================="
 echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_examples/"
 # EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_examples/
 
-#Comment
+# Comment
 
-#Echo
+# Echo
     echo "Yo"
 
-#Add 2 numbers
+# Add 2 numbers
     echo -e "\nAdd 2 numbers"
     echo -e "----------------------"
     ((sum=25+25))
     #Echo answer
     echo $sum
 
-#Multi Line Comment
+# Multi Line Comment
     : '
     Multi Line
     Comment
     '
 
-#While Loop
+# While Loop
     echo -e "\nWhile Loop"
     echo -e "----------------------"
     valid=true
@@ -39,7 +39,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
         ((count++))
     done
 
-#For Loop
+# For Loop
     echo -e "\nFor Loop"
     echo -e "----------------------"
     for (( counter=10; counter>0; counter-- ))
@@ -48,14 +48,14 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     done
     printf "\n"
 
-#Get User Input
+# Get User Input
     echo -e "\nGet User Input"
     echo -e "----------------------"
     echo "Enter Your Name"
     read name
     echo "Welcome $name to Bash Scripting"
 
-#If Statement
+# If Statement
     echo -e "\nIf Statement"
     echo -e "----------------------"
     n=10
@@ -66,7 +66,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
         echo "It is a two digit number"
     fi
 
- #Case Statement
+ # Case Statement
     echo -e "\nCase Statement"
     echo -e "----------------------"
     echo "Enter You Lucky Number"
@@ -82,7 +82,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
         echo "Sorry Try Again Soon";;
     esac
 
- #Get Command Line Arguments
+ # Get Command Line Arguments
     echo -e "\nGet Command Line Arguments"
     echo -e "----------------------"
     echo "Total Arguments : $#"
@@ -90,7 +90,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     echo "2nd Argument = $2"   
 
 
- #Get Command Line Arguments with Names
+ # Get Command Line Arguments with Names
     echo -e "\nGet Command Line Arguments with Names"
     echo -e "----------------------"
     for arg in "$@"
@@ -107,7 +107,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     ((result=x+y))
     echo "X+Y=$result"
 
-#Combine String Variables
+# Combine String Variables
     echo -e "\nCombine String Variables"
     echo -e "----------------------"
     string1="Software Architecture"
@@ -119,7 +119,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     string3+=" Is A Great Module"
     echo $string3
 
-#Get Substring of String
+# Get Substring of String
     echo -e "\nGet Substring of String"
     echo -e "----------------------"
     str="Learn Linux with SADP"
@@ -131,7 +131,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     echo $subStr
     #echo: SADP
 
-#Add 2 Numbers
+# Add 2 Numbers
     echo -e "\nAdd 2 Numbers"
     echo -e "----------------------"
     echo "Enter First Number"
@@ -141,7 +141,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     ((sum=x+y))
     echo "Result = $sum"
 
-#Create A Function
+# Create A Function
     echo -e "\nCreate A Function"
     echo -e "----------------------"
     function F1()
@@ -151,7 +151,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     #Call the function
     F1
 
-#Function With Parameters
+# Function With Parameters
     echo -e "\nFunction With Parameters"
     echo -e "----------------------"
     Rectangle_Area(){
@@ -161,7 +161,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     #Call the function
     Rectangle_Area 10 5
 
-#Pass Return Value From Function
+# Pass Return Value From Function
     echo -e "\nPass Return Value From Function"
     echo -e "----------------------"
     function greeting(){
@@ -174,7 +174,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     val=$(greeting)
     echo "Return Value Of The Function Is: $val"
 
-#Make Directory
+# Make Directory
     echo -e "\nMake Directory"
     echo -e "----------------------"
     echo "Enter Directory Name"
@@ -183,7 +183,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     cd tests
     mkdir $newdir
 
-#Make Directory By Checking Existence
+# Make Directory By Checking Existence
     echo -e "\nMake Directory By Checking Existence"
     echo -e "----------------------"
     echo "Enter Directory Name"
@@ -198,7 +198,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
         echo "Directory Created"
     fi
 
-#Check If File Exists
+# Check If File Exists
     echo -e "\nCheck If File Exists"
     echo -e "----------------------"
     filename=$1
@@ -210,12 +210,11 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
         echo "Created $filename"
     fi
 
-#Read A File
+#  Read A File
     echo -e "\nRead A File"
     echo -e "----------------------"
     echo "Read A File"
     # If current directory is tests
-    if [  ]
     cd tests
     file="book.txt"
     #Will not read last line (leave blank)
@@ -223,7 +222,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
         echo $line
     done < $file
 
-#Append To A File
+# Append To A File
     echo -e "\nAppend To A File"
     echo -e "----------------------"
     echo "Before Appending The File"
@@ -233,7 +232,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     echo "After Appending The File"
     cat book.txt
 
-#Remove A File
+# Remove A File
     echo -e "\nRemove A File"
     echo -e "----------------------"
     echo "Enter Filename To Remove"
@@ -242,7 +241,7 @@ echo "EXAMPLES TAKEN AND ADAPTED FROM: https://linuxhint.com/30_bash_script_exam
     # -i adds user confirmation
     #rm -i $fn 
 
-#Send Email
+# Send Email
     echo -e "\nSend Email"
     echo -e "----------------------"
     echo "Your Email >"
