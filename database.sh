@@ -142,34 +142,40 @@ then
     # Get User Input For Task
     echo -e "\n\n> Select A Task (Enter An Argument)..."
     read task
+    clear
 else
     # If Command Line Argument Provided
     echo "> DB OPERATION SELECTED = $task"
 fi
 
-#If MariaDB is not installed, install it
-if [ ! command -v mysql &> /dev/null ] && [ "$task" != "x" ]
+# If not exiting
+if [ "$task" != "x" ]
 then
-    echo -e "\n-------------------------------------"
-    echo " To continue, MariaDB must be installed"
-    echo "-------------------------------------"
-    str="Install Maria DB"
-    CONFIRM
-    read confirmation;
 
-    # Install MariaDB
-    sudo bash install.sh MariaDB
-else
-    # If MariaDB is installed, start service
-    if ! command -v systemctl &> /dev/null
+    #If MariaDB is not installed, install it
+    if [ ! command -v mysql &> /dev/null ] 
     then
-        sudo systemctl start mariadb
-    else
-        # ON WSL
-        sudo service mysql start
-    fi
-fi
+        echo -e "\n-------------------------------------"
+        echo " To continue, MariaDB must be installed"
+        echo "-------------------------------------"
+        str="Install Maria DB"
+        CONFIRM
+        read confirmation;
 
+        # Install MariaDB
+        sudo bash install.sh MariaDB
+    else
+        # If MariaDB is installed, start service
+        if ! command -v systemctl &> /dev/null
+        then
+            sudo systemctl start mariadb
+        else
+            # ON WSL
+            sudo service mysql start
+        fi
+    fi
+
+fi
 
 # Case Statement Selecting Task  
     case $task in
