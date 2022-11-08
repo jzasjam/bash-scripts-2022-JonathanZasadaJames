@@ -32,7 +32,7 @@ then
     echo "============================="
     
     echo -e "\n-------------------------------------"
-    echo " Options(s)\tDescription"
+    echo -e " Options(s)\tDescription"
     echo "-------------------------------------"
     # Loop through the array and print out the arguments and descriptions menu 
     for key in "${!operations[@]}"; do
@@ -286,7 +286,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                     echo "=================================="
                     echo "Install: PHP & Recommended Modules"
                     echo "=================================="
-                    echo -e "\n urrent Version:"
+                    echo -e "\n Current Version:"
                     echo "----------------"
                     if ! command -v php &> /dev/null
                     then
