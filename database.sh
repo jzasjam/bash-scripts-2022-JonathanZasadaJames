@@ -21,8 +21,8 @@ function SQLQUERY(){
 # Show Database Users
 function SHOW_USERS(){
     # Show Users
-    echo "----------------------"
-    echo "CURRENT USERS"
+    echo -e "\n----------------------"
+    echo " CURRENT USERS"
     echo "----------------------"
     query="SELECT user FROM mysql.user;"
     SQLQUERY
@@ -32,8 +32,8 @@ function SHOW_USERS(){
 # Display a users database permissions
 function SHOW_USER_PERMISSIONS(){
     # Show User Permissions
-    echo "----------------------"
-    echo "CURRENT PERMISSIONS"
+    echo -e "\n----------------------"
+    echo " CURRENT PERMISSIONS"
     echo "----------------------"
     query="SHOW GRANTS FOR $user_name@'localhost';"
     SQLQUERY
@@ -43,8 +43,8 @@ function SHOW_USER_PERMISSIONS(){
 # Display the existing databases
 function SHOW_DATABASES(){
     # Show Databases
-    echo "----------------------"
-    echo "CURRENT DATABASES"
+    echo -e "\n----------------------"
+    echo " CURRENT DATABASES"
     echo "----------------------"
     query="SHOW DATABASES;"
     SQLQUERY
@@ -53,8 +53,8 @@ function SHOW_DATABASES(){
 # Display the existing databases
 function SHOW_TABLES(){
     # Show Tables
-    echo "----------------------"
-    echo "CURRENT TABLES"
+    echo -e "\n----------------------"
+    echo " CURRENT TABLES"
     echo "----------------------"
     query="USE $db_name;"
     query+="SHOW TABLES;"
@@ -64,8 +64,8 @@ function SHOW_TABLES(){
 # Display database table columns
 function SHOW_COLUMNS(){
     # Show Columns
-    echo "----------------------"
-    echo "CURRENT COLUMNS"
+    echo -e "\n----------------------"
+    echo " CURRENT COLUMNS"
     echo "----------------------"
     query="USE $db_name;"
     query+="SHOW COLUMNS FROM $table_name;"
@@ -75,10 +75,10 @@ function SHOW_COLUMNS(){
 
 # Display a message and get user confirmation
 function CONFIRM(){
+    echo -e "\n----------------------"
+    echo " CONFIRMATION"
     echo "----------------------"
-    echo "CONFIRMATION"
-    echo "----------------------"
-    echo "Are you sure you want to $str? (y/n)"
+    echo "> Are you sure you want to $str? (y/n)"
     read confirmation;
 
     if [ "$confirmation" != "y" ]
@@ -100,34 +100,34 @@ function WARNING(){
 
 
 # Intoduction Message
-echo "=============================="
-echo "Database Management"
-echo "=============================="
+echo "=================================================================="
+echo " Database Management"
+echo "=================================================================="
 echo "-------------------------------------"
 printf "Argument(s)         Description\n"
 echo "-------------------------------------"
 # Create an array of database operations to complete
 i=0
-operations[$i]="s    | show         Show Databases"; ((i++))
-operations[$i]="c    | create       Create Database"; ((i++))
-operations[$i]="d    | drop         Drop/Delete Database\n"; ((i++))
+operations[$i]=" s    | show         Show Databases"; ((i++))
+operations[$i]=" c    | create       Create Database"; ((i++))
+operations[$i]=" d    | drop         Drop/Delete Database\n"; ((i++))
 
-operations[$i]="su   | showusers    Show Users"; ((i++))
-operations[$i]="cu   | createuser   Create User"; ((i++))
-operations[$i]="du   | dropuser     Drop/Delete User\n"; ((i++))
+operations[$i]=" su   | showusers    Show Users"; ((i++))
+operations[$i]=" cu   | createuser   Create User"; ((i++))
+operations[$i]=" du   | dropuser     Drop/Delete User\n"; ((i++))
 
-operations[$i]="st   | showtables   Show Tables for a Database"; ((i++))
-operations[$i]="ct   | createtable  Create Table"; ((i++))
-operations[$i]="dt   | droptable    Drop/Delete Table\n"; ((i++))
+operations[$i]=" st   | showtables   Show Tables for a Database"; ((i++))
+operations[$i]=" ct   | createtable  Create Table"; ((i++))
+operations[$i]=" dt   | droptable    Drop/Delete Table\n"; ((i++))
 
-operations[$i]="col  | columns      Show Table Columns"; ((i++))
-operations[$i]="sel  | select       Select/Show Table Contents\n"; ((i++))
+operations[$i]=" col  | columns      Show Table Columns"; ((i++))
+operations[$i]=" sel  | select       Select/Show Table Contents\n"; ((i++))
 
-operations[$i]="dbu  | adduser      Add User to a Database"; ((i++))
-operations[$i]="dbru | removeuser   Remove User from a Database\n"; ((i++))
+operations[$i]=" dbu  | adduser      Add User to a Database"; ((i++))
+operations[$i]=" dbru | removeuser   Remove User from a Database\n"; ((i++))
 
-#operations[$i]="t    | tables       Create Tables"; ((i++))
-operations[$i]="x    | exit         Exit Database Menu"; ((i++))
+#operations[$i]=" t    | tables       Create Tables"; ((i++))
+operations[$i]=" x    | exit         Exit Database Menu"; ((i++))
 
 # Display Menu
 # Loop through the array and print out the operations menu 
@@ -135,14 +135,23 @@ for key in "${!operations[@]}"; do
     printf "${operations[${key}]} \n"
 done
 
-# Get User Input For Task
-echo -e "\n\n> Select A Task (Enter An Argument)..."
-read task
+
+task=$1
+if test -z "$task" 
+then
+    # Get User Input For Task
+    echo -e "\n\n> Select A Task (Enter An Argument)..."
+    read task
+else
+    # If Command Line Argument Provided
+    echo "> DB OPERATION SELECTED = $task"
+fi
 
 #If MariaDB is not installed, install it
-if ! command -v mysql &> /dev/null
+if [ ! command -v mysql &> /dev/null ] && [ "$task" != "x" ]
 then
-    echo "To continue, MariaDB must be installed"
+    echo -e "\n-------------------------------------"
+    echo " To continue, MariaDB must be installed"
     echo "-------------------------------------"
     str="Install Maria DB"
     CONFIRM
@@ -172,11 +181,11 @@ fi
         # Create a Database
         c | create)
             clear
-            echo "============================"
-            echo "CREATE NEW DATABASE"
-            echo "============================"
+            echo "=================================="
+            echo " CREATE NEW DATABASE"
+            echo "=================================="
             SHOW_DATABASES
-            echo "Enter New Database Name >"
+            echo -e "\n> Enter New Database Name..."
             echo "----------------------"
             read db_name
             # Get confirmation (str is description of operation used in confirmation message) 
@@ -196,11 +205,11 @@ fi
         # Drop/Delete a Database
         d | drop)
             clear
-            echo "============================"
-            echo "DROP/DELETE A DATABASE"
-            echo "============================"
+            echo "=================================="
+            echo " DROP/DELETE A DATABASE"
+            echo "=================================="
             SHOW_DATABASES
-            echo "Which Database To Drop? >"
+            echo -e "\n> Which Database To Drop?"
             echo "----------------------"
             read db_name
             # Get confirmation (str is description of operation used in confirmation message) 
@@ -226,23 +235,23 @@ fi
         # Create A New Database User
         cu | user)
             clear
-            echo "============================"
-            echo "CREATE NEW USER"
-            echo "============================"
+            echo "=================================="
+            echo " CREATE NEW USER"
+            echo "=================================="
             SHOW_USERS
-            echo "Enter New User Name: >"
+            echo -e "\n> Enter New User Name?"
             echo "----------------------"
             read user_name
             
             # Confirm passwords are the same
             while [ true ] 
             do
-                echo "----------------------"
-                echo "Enter New User Password: >"
+                echo -e "\n----------------------"
+                echo "> Enter New User Password?"
                 echo "----------------------"
                 read -s user_password
                 echo
-                echo "Repeat Password: >"
+                echo "> Repeat Password?"
                 read -s user_password2
                 echo
                 if [ "$user_password" != "$user_password2" ]; 
@@ -273,11 +282,11 @@ fi
         # Drop/Delete a Database User
         du | dropuser)
             clear
-            echo "============================"
-            echo "DROP/DELETE A DATABASE USER"
-            echo "============================"
+            echo "=================================="
+            echo " DROP/DELETE A DATABASE USER"
+            echo "=================================="
             SHOW_USERS
-            echo "Which User To Drop: >"
+            echo -e "\n> Which User To Drop?"
             echo "----------------------"
             read user_name
             str="drop/delete user $user_name"
@@ -297,20 +306,20 @@ fi
         # Add A User To A Database
         dbu | adduser)
             clear
-            echo "============================"
-            echo "ADD USER TO DATABASE"
-            echo "============================"
+            echo "=================================="
+            echo " ADD USER TO DATABASE"
+            echo "=================================="
             SHOW_USERS
             
-            echo "Which User To Add: >"
+            echo -e "\n> Which User To Add?"
             echo "----------------------"
             read user_name
             clear
             SHOW_USER_PERMISSIONS
             SHOW_DATABASES
 
-            echo "----------------------"
-            echo "Which Database To Add User: >"
+            echo -e "\n----------------------"
+            echo "> Which Database To Add User?"
             echo "----------------------"
             read db_name
 
@@ -331,20 +340,20 @@ fi
         # Remove A User From A Database
         dbru | removeuser)
             clear
-            echo "============================"
-            echo "REMOVE USER FROM DATABASE"
-            echo "============================"
+            echo "=================================="
+            echo " REMOVE USER FROM DATABASE"
+            echo "=================================="
             SHOW_USERS
 
-            echo "Whch User To Remove: >"
+            echo -e "\n> Which User To Remove?"
             echo "----------------------"
             read user_name
             clear
             SHOW_USER_PERMISSIONS
             SHOW_DATABASES
 
-            echo "----------------------"
-            echo "Which Database To Remove User:"
+            echo -e "\n----------------------"
+            echo "> Which Database To Remove User?"
             read db_name
 
             # Get confirmation
@@ -364,8 +373,8 @@ fi
         st | showtables)
             clear
             SHOW_DATABASES
-            echo "----------------------"
-            echo "Which Database To Show Tables:"
+            echo -e "\n----------------------"
+            echo "> Which Database To Show Tables?"
             read db_name
             SHOW_TABLES
         ;;
@@ -373,16 +382,16 @@ fi
         # Create A New Database Table
         ct | createtable)
             clear
-            echo "============================"
-            echo "CREATE NEW TABLE"
-            echo "============================"
+            echo "=================================="
+            echo " CREATE NEW TABLE"
+            echo "=================================="
             SHOW_DATABASES
-            echo "----------------------"
-            echo "Which Database To Create Table:"
+            echo -e "\n----------------------"
+            echo "> Which Database To Create Table?"
             read db_name
             SHOW_TABLES
-            echo "----------------------"
-            echo "Enter New Table Name:"
+            echo -e "\n----------------------"
+            echo "> Enter New Table Name"
             read table_name
             # Get confirmation (str is description of operation used in confirmation message) 
             str="create table $table_name"
@@ -402,16 +411,16 @@ fi
         # Drop/Delete a Database Table
         dt | droptable)
             clear
-            echo "============================"
-            echo "DROP/DELETE A DATABASE TABLE"
-            echo "============================"
+            echo "=================================="
+            echo " DROP/DELETE A DATABASE TABLE"
+            echo "=================================="
             SHOW_DATABASES
-            echo "----------------------"
-            echo "Which Database To Drop Table:"
+            echo -e "\n----------------------"
+            echo "> Which Database To Drop Table?"
             read db_name
             SHOW_TABLES
-            echo "----------------------"
-            echo "Which Table To Drop:"
+            echo -e "\n----------------------"
+            echo "> Which Table To Drop?"
             read table_name
             # Get confirmation (str is description of operation used in confirmation message) 
             str="drop/delete table $table_name"
@@ -427,39 +436,41 @@ fi
             fi
             SHOW_TABLES
         ;;
+
         # Show The Existing Database Table Columns
         col | columns)
             clear
-            echo "============================"
-            echo "SHOW DATABASE TABLE COLUMNS"
-            echo "============================"
+            echo "=================================="
+            echo " SHOW DATABASE TABLE COLUMNS"
+            echo "=================================="
             SHOW_DATABASES
-            echo "----------------------"
-            echo "Which Database To Show Table Columns:"
+            echo -e "\n----------------------"
+            echo "> Which Database To Show Table Columns?"
             read db_name
             SHOW_TABLES
-            echo "----------------------"
-            echo "Which Table To Show Columns:"
+            echo -e "\n----------------------"
+            echo "> Which Table To Show Columns?"
             read table_name
             SHOW_COLUMNS
         ;;
+        
         # Select Data From A Database Table
         sel | select)
             clear
-            echo "============================"
-            echo "SELECT DATA FROM DATABASE TABLE"
-            echo "============================"
+            echo "=================================="
+            echo " SELECT DATA FROM DATABASE TABLE"
+            echo "=================================="
             SHOW_DATABASES
-            echo "----------------------"
-            echo "Which Database To Select Data From:"
+            echo -e "\n----------------------"
+            echo "> Which Database To Select Data From?"
             read db_name
             SHOW_TABLES
-            echo "----------------------"
-            echo "Which Table To Select Data From:"
+            echo -e "\n----------------------"
+            echo "> Which Table To Select Data From?"
             read table_name
             SHOW_COLUMNS
-            echo "----------------------"
-            echo "Which Columns To Select Data From (use comma between multiple or use * for all):"
+            echo -e "\n----------------------"
+            echo "> Which Columns To Select Data From (use comma between multiple or use * for all)?"
             read column_name
             query="USE $db_name;"
             query+="SELECT $column_name FROM $table_name;"
@@ -467,9 +478,9 @@ fi
         ;;
 
         x | exit)
-            echo "==================="
-            echo "Leaving Database Management!"
-            echo "==================="
+            echo "=============================="
+            echo " Leaving Database Management!"
+            echo "=============================="
             exit
         ;;
         *)
