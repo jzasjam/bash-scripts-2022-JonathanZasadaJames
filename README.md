@@ -1,7 +1,7 @@
 # bash
-
-By Jonathan Zasada-James [31051167]
 ===================================
+By Jonathan Zasada-James [31051167]
+-----------------------------------
 
 Setup: Place the directory on your machine in an easy to access directory
 
