@@ -408,8 +408,6 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 read wp_dbname
                 echo -e "\n> Enter New Wordpress Database User: "
                 read wp_dbuser
-                echo -e "\n> Enter New Wordpress Database Password: "
-                read wp_dbpass
 
                 # Confirm passwords are the same
                 while [ true ] 

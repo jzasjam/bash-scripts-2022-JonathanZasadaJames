@@ -52,7 +52,7 @@ echo "=============================="
     sudo sed -i "s/date_string_here/$date_string/g" /var/www/html/index.html
 
     # Offer to show new homepage
-    echo -e "\> Want to view http://localhost/? (y/n)"
+    echo -e "\n> Want to view http://localhost/? (y/n)"
     read confirmation;
     if [ "$confirmation" = "y" ]
     then
