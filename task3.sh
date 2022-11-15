@@ -115,7 +115,7 @@ function RESTART(){
         ;;
         # CAUTION: Remove all packages, databases + installs
         reset)
-            sudo bash remove.sh
+            sudo bash reset.sh
         ;;
         # Exit
         x | exit)
