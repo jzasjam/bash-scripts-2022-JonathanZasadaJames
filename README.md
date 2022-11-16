@@ -3,10 +3,10 @@
 ##### By Jonathan Zasada-James [31051167]
 -----------------------------------
 
-## Setup: ## 
+## Setup:
 Place the downloaded directory on your machine in an easy to access directory
 
-## Usage: ##
+## Usage:
 1. In terminal, cd to the directory you downloaded or moved it
 > *eg:* `cd Downloads/bash-scripts-2022-JonathanZasadaJames`
 
