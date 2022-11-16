@@ -111,7 +111,7 @@ function RESTART(){
         ;;
         # Load a URL in the default browser
         w | www)
-            sudo bash load-www.sh $2
+            bash load-www.sh $2
         ;;
         # CAUTION: Remove all packages, databases + installs
         reset)

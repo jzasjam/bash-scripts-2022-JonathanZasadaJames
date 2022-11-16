@@ -20,7 +20,7 @@ COLOR='\033[0m' # No Color
     fi
 
 # Check if command is available
-    if ! command -v xdg-open &> /dev/null
+    if [ ! command -v xdg-open &> /dev/null ]
     then
         # If not available, install it 
         warning="xdg-open could not be found"
