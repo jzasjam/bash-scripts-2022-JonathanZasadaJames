@@ -34,7 +34,7 @@ COLOR='\033[0m' # No Color
         #warning="sendmail command could not be found"
         #WARNING
         echo "--------------------------"
-        echo "Configure sendmail? (y/n)"
+        echo "Configure sendmail? (y/n) (Use SendGrid single sender email)"
         read confirmation;
         if [ "$confirmation" = "y" ]
         then
@@ -92,4 +92,6 @@ COLOR='\033[0m' # No Color
     read message
     #echo $message | mail -s $subject $email
     echo -e "Subject: $subject \nFrom:$from_email \n\n $message" | sendmail $email
+
+    echo -e "\n--------- Email Sent ----------"
     
