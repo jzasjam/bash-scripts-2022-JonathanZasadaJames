@@ -33,14 +33,14 @@ function APACHE_STATUS(){
         if ! command -v systemctl &> /dev/null
         then
             #sudo systemctl status apache2
-            if sudo systemctl status apache2 | grep -q "is running"; 
+            if [ `sudo systemctl status apache2 | grep -q "is running"` ] || [ `sudo systemctl status apache2 | grep -q "active (exited)"` ] 
             then
                 status=1
             fi
         else
             # ON WSL
             #sudo service apache2 status
-            if sudo service apache2 status | grep -q "is running"; 
+            if [ `sudo systemctl status apache2 | grep -q "is running"` ] || [ `sudo systemctl status apache2 | grep -q "active (exited)"` ] 
             then
                 status=1
             fi
@@ -69,14 +69,17 @@ function MARIADB_STATUS(){
         if [ ! command -v systemctl &> /dev/null ] 
         then
             #sudo systemctl status mariadb
-            if sudo systemctl status mariadb | grep -q "Uptime"; 
+            if [ `sudo systemctl status mariadb | grep -q "Uptime"` ] || [ `sudo systemctl status mariadb | grep -q "active (running)"` ] 
+            then
+                status=1
+            fi 
             then
                 status=1
             fi
         else
             # ON WSL
             #sudo service mysql status
-            if sudo service mysql status | grep -q "Uptime"; 
+            if [ `sudo systemctl status mariadb | grep -q "Uptime"` ] || [ `sudo systemctl status mariadb | grep -q "active (running)"` ]  
             then
                 status=1
             fi
