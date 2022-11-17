@@ -17,8 +17,9 @@ printf "${NC}"
 i=0
 # Basic tasks
 operations[$i]="h  | help       Get Some Help"; ((i++))
-operations[$i]="d  | demo       See Bash Demo"; ((i++))
-operations[$i]="w  | www        Open A Web Page\n"; ((i++))
+#operations[$i]="d  | demo       See Bash Demo"; ((i++))
+operations[$i]="w  | www        Open A Web Page"; ((i++))
+operations[$i]="e  | email      Send An Email\n"; ((i++))
 
 # LAMP Stack Setup & Management
 operations[$i]="u  | update     Update and Upgrade"; ((i++))
@@ -92,6 +93,10 @@ function RESTART(){
         # Database Management
         db | database)
             sudo bash database.sh $2
+        ;;
+        # Send Email
+        e | email)
+            sudo bash send-email.sh
         ;;
         # Creates a Custom index.html File
         hp | homepage)
