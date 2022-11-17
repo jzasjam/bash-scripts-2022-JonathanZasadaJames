@@ -26,14 +26,14 @@ Place the downloaded directory on your machine in an easy to access directory
 ### Files Description
 - The .sh files can be executed independently...
 > eg: `bash install.sh` or `bash install.sh php` to install immediately
-/html                   Directory containing template html for custom index.html
-/tests                  Directory containing some test files used with *demo.sh*
-create-homepage.shu     Script to take user input and create a custom index.html in /var/www/html
-database.sh             MariaDB Datanase management tool (Show, Drow & Create; Databases, Tables & Users)
-demo.sh                 Examples of some BASH functionality
-help.sh                 Help file with instructions for user
-install.sh              LAMP Install helper tool for Apache, MariaDB, PHP and WP
-load-www.sh             Load a webpage in the browser
-reset.sh                Removes all LAMP(+Wordpress) packages, files and databases.
-service-status.sh       Get the latest status, start, stop and restart for Apache and MariaDB
-task3.sh                Main menu script to guide user
++ /html                   Directory containing template html for custom index.html
++ /tests                  Directory containing some test files used with *demo.sh*
++ create-homepage.shu     Script to take user input and create a custom index.html in /var/www/html
++ database.sh             MariaDB Datanase management tool (Show, Drow & Create; Databases, Tables & Users)
++ demo.sh                 Examples of some BASH functionality
++ help.sh                 Help file with instructions for user
++ install.sh              LAMP Install helper tool for Apache, MariaDB, PHP and WP
++ load-www.sh             Load a webpage in the browser
++ reset.sh                Removes all LAMP(+Wordpress) packages, files and databases.
++ service-status.sh       Get the latest status, start, stop and restart for Apache and MariaDB
++ task3.sh                Main menu script to guide user
