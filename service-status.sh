@@ -33,19 +33,19 @@ function APACHE_STATUS(){
         if ! command -v systemctl &> /dev/null
         then
             #sudo systemctl status apache2
-            if sudo systemctl status apache2 | grep -q "is running" || sudo systemctl status apache2 | grep -q "active (exited)";
+            if sudo systemctl status apache2 | grep -q "is running" || sudo systemctl status apache2 | grep -q "Active: active ";
             then
                 status=1
             fi
         else
             # ON WSL
             #sudo service apache2 status
-            if sudo service apache2 status | grep -q "is running" || sudo systemctl status apache2 | grep -q "active (exited)";
+            if sudo service apache2 status | grep -q "is running" || sudo systemctl status apache2 | grep -q "Active: active";
             then
                 status=1
             fi
         fi
-        # Try to check the service status another way if status is 0    
+        # Try to check the service status another way if status in --all is +    
         : '
         if [ $status -eq 0 ]
         then
