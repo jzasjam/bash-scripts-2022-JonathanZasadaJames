@@ -100,8 +100,8 @@ COLOR='\033[0m' # No Color
 
 # Create an array of install options
     i=0
-    operations[$i]=" s  | send          Send An Email"; ((i++))
-    operations[$i]=" c  | config        Configure SMTP\n"; ((i++))
+    operations[$i]=" s  | send       Send An Email"; ((i++))
+    operations[$i]=" c  | config     Configure SMTP\n"; ((i++))
 
     operations[$i]=" x  | exit       Exit Install Menu"; ((i++))
 

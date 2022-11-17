@@ -73,9 +73,6 @@ function MARIADB_STATUS(){
             then
                 status=1
             fi 
-            then
-                status=1
-            fi
         else
             # ON WSL
             #sudo service mysql status
