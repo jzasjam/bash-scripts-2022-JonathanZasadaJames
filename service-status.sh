@@ -78,7 +78,6 @@ function MARIADB_STATUS(){
     else
         status=0
         
-
         if [ ! command -v systemctl &> /dev/null ] 
         then
             #sudo systemctl status mariadb
@@ -133,7 +132,7 @@ function MARIADB_STATUS(){
     echo "============================="
     echo "What Do You Want To Do?"
     echo -e "=============================\n"
-    
+
     APACHE_STATUS
     MARIADB_STATUS
 
@@ -144,11 +143,18 @@ function MARIADB_STATUS(){
     for key in "${!operations[@]}"; do
         printf "${operations[${key}]} \n"
     done
+
+    echo -e "\n-------------------------------------"
+    echo -e "You can start, stop, restart all or select individual services eg:\n  > start apache \n  > 1 a \n  > start a \n  > 1 apache \n - will all start apache (use m | mariadb for MariaDB))"
+    echo -e "-------------------------------------"
+
     # Get User Input For Install
     echo -e "\n\n> Select What To Do..."
     read task   
     clear
 
+    stringarray=($task)
+    task=${stringarray[0]}
 
 #------------------------------------------------------------
 # Chosen Task Starts Here
@@ -160,10 +166,18 @@ function MARIADB_STATUS(){
         1 | start)
             echo -e "\n Starting Services..."
             echo "=============================="
-            echo -e "\n Starting Apache..."
-            sudo service apache2 start
-            echo -e "\n Starting MariaDB..."
-            sudo service mysql start
+
+            if [ "${stringarray[1]}" == "a" ] || [ "${stringarray[1]}" == "apache" ] || [ ! ${stringarray[1]} ]
+            then 
+
+                echo -e "\n Starting Apache..."
+                sudo service apache2 start
+            fi
+            if [ "${stringarray[1]}" == "m" ] || [ "${stringarray[1]}" == "mariadb" ] || [ ! ${stringarray[1]} ]
+            then 
+                echo -e "\n Starting MariaDB..."
+                sudo service mysql start
+            fi
         ;;
 
         # Stop Services
@@ -171,10 +185,16 @@ function MARIADB_STATUS(){
             echo -e "\n Stopping Services..."
             echo "=============================="
 
-            echo -e "\n Stopping Apache..."
-            sudo service apache2 stop
-            echo -e "\n Stopping MariaDB..."
-            sudo service mysql stop
+            if [ "${stringarray[1]}" == "a" ] || [ "${stringarray[1]}" == "apache" ] || [ ! ${stringarray[1]} ]
+            then 
+                echo -e "\n Stopping Apache..."
+                sudo service apache2 stop
+            fi
+            if [ "${stringarray[1]}" == "m" ] || [ "${stringarray[1]}" == "mariadb" ] || [ ! ${stringarray[1]} ]
+            then 
+                echo -e "\n Stopping MariaDB..."
+                sudo service mysql stop
+            fi
         ;;
 
         # Restart Services
@@ -182,10 +202,16 @@ function MARIADB_STATUS(){
             echo -e "\n Restarting Services..."
             echo "=============================="
             
-            echo -e "\n Restarting Apache..."
-            sudo service apache2 restart
-            echo -e "\n Restarting MariaDB..."
-            sudo service mysql restart
+            if [ "${stringarray[1]}" == "a" ] || [ "${stringarray[1]}" == "apache" ] || [ ! ${stringarray[1]} ]
+            then 
+                echo -e "\n Restarting Apache..."
+                sudo service apache2 restart
+            fi
+            if [ "${stringarray[1]}" == "m" ] || [ "${stringarray[1]}" == "mariadb" ] || [ ! ${stringarray[1]} ]
+            then 
+                echo -e "\n Restarting MariaDB..."
+                sudo service mysql restart
+            fi
         ;;
 
         # Status
