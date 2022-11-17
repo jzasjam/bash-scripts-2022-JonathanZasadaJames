@@ -96,11 +96,11 @@ function RESTART(){
         ;;
         # Send Email
         e | email)
-            sudo bash send-email.sh
+            bash send-email.sh
         ;;
         # Creates a Custom index.html File
         hp | homepage)
-            sudo bash create-homepage.sh
+            bash create-homepage.sh
         ;;
         # Install Packages
         i | install)

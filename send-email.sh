@@ -73,5 +73,5 @@ COLOR='\033[0m' # No Color
     echo "Message >"
     read message
     #echo $message | mail -s $subject $email
-    echo -e "Subject: $subject \n\n $message" | sendmail $email
+    echo -e "Subject: $subject \nFrom:c1051167@my.shu.ac.uk \n\n $message" | sendmail $email
     
