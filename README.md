@@ -35,5 +35,6 @@ Place the downloaded directory on your machine in an easy to access directory
 + **install.sh**              - LAMP Install helper tool for Apache, MariaDB, PHP and WP
 + **load-www.sh**             - Load a webpage in the browser
 + **reset.sh**                - Removes all LAMP(+Wordpress) packages, files and databases.
++ **send-email.sh**           - Send an email to a chosen address (via SMTP connection)
 + **service-status.sh**       - Get the latest status, start, stop and restart for Apache and MariaDB
 + **task3.sh**                - Main menu script to guide user
