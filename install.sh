@@ -367,6 +367,13 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "=================================="
                 echo " Install: Wordpress"
                 echo "=================================="
+                # Check if wordpress is installed
+                if [ -d "/var/www/html/wp" ] 
+                then
+                    echo "Wordpress is Already Installed"
+                else
+                    echo "Wordpress is Not Installed"
+                fi
                 echo -e "\n------------------------------"
                 echo " Install Latest Wordpress? (y/n)"
                 echo "------------------------------"
