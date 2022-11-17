@@ -81,11 +81,17 @@ function CONFIRM(){
     echo "> Are you sure you want to $str? (y/n)"
     read confirmation;
 
-    if [ "$confirmation" != "y" ]
+    if [ "$confirmation" == "y" ]
     then
-        RESTART
-    else
         clear
+    else
+        if [ "$confirmation" == "n" ]
+        then
+            RESTART
+        else
+            echo "Invalid Input"
+            CONFIRM
+        fi
     fi
 }
 
@@ -158,7 +164,7 @@ then
         echo -e "\n-------------------------------------"
         echo " To continue, MariaDB must be installed"
         echo "-------------------------------------"
-        str="Install Maria DB"
+        str="Install Maria DB" # Set Confirmation Message
         CONFIRM
         read confirmation;
 
@@ -190,22 +196,28 @@ fi
             echo "=================================="
             echo " CREATE NEW DATABASE"
             echo "=================================="
-            SHOW_DATABASES
-            echo -e "\n> Enter New Database Name..."
-            echo "----------------------"
-            read db_name
-            # Get confirmation (str is description of operation used in confirmation message) 
-            str="create database $db_name"
-            CONFIRM
-            if [ "$db_name" != "" ]; then
-                query="CREATE DATABASE $db_name;"
-                SQLQUERY
-                clear
-            else
-                clear
-                warning="Database name cannot be empty"
-                WARNING
-            fi
+            
+            while [ "$db_name" == "" ]
+            do
+                SHOW_DATABASES
+                echo -e "\n> Enter New Database Name... (Can cancel/confirm at next step)"
+                echo "----------------------"
+                read db_name
+                if [ "$db_name" != "" ]; 
+                then
+                    query="CREATE DATABASE $db_name;"
+                    # Get confirmation (str is description of operation used in confirmation message) 
+                    str="create database $db_name"
+                    CONFIRM
+                    SQLQUERY
+                    clear
+                    break
+                else
+                    clear
+                    warning="Database name cannot be empty"
+                    WARNING
+                fi
+            done
             SHOW_DATABASES
         ;;
         # Drop/Delete a Database
@@ -214,23 +226,26 @@ fi
             echo "=================================="
             echo " DROP/DELETE A DATABASE"
             echo "=================================="
-            SHOW_DATABASES
-            echo -e "\n> Which Database To Drop?"
-            echo "----------------------"
-            read db_name
-            # Get confirmation (str is description of operation used in confirmation message) 
-            str="drop/delete database $db_name"
-            CONFIRM
-            if [ "$db_name" != "" ]; 
-            then
-                query="DROP DATABASE $db_name;"
-                SQLQUERY
-                clear
-            else
-                clear
-                warning="Database name cannot be empty"
-                WARNING
-            fi
+            while [ "$db_name" == "" ]
+            do
+                SHOW_DATABASES
+                echo -e "\n> Which Database To Drop? (Can cancel/confirm at next step)"
+                echo "----------------------"
+                read db_name
+                if [ "$db_name" != "" ]; then
+                    query="DROP DATABASE $db_name;"
+                    # Get confirmation (str is description of operation used in confirmation message) 
+                    str="drop/delete database $db_name"
+                    CONFIRM
+                    SQLQUERY
+                    clear
+                    break
+                else
+                    clear
+                    warning="Database name cannot be empty"
+                    WARNING
+                fi
+            done
             SHOW_DATABASES
         ;;
         # Show The Existing Database Users
@@ -244,45 +259,50 @@ fi
             echo "=================================="
             echo " CREATE NEW USER"
             echo "=================================="
-            SHOW_USERS
-            echo -e "\n> Enter New User Name?"
-            echo "----------------------"
-            read user_name
-            
-            # Confirm passwords are the same
-            while [ true ] 
-            do
-                echo -e "\n----------------------"
-                echo "> Enter New User Password?"
-                echo "----------------------"
-                read -s user_password
-                echo
-                echo "> Repeat Password?"
-                read -s user_password2
-                echo
-                if [ "$user_password" != "$user_password2" ]; 
-                then
-                    clear
-                    warning="Passwords do not match"
-                    WARNING
-                else
-                    break
-                fi  
-            done
 
-            # Get confirmation (str is description of operation used in confirmation message) 
-            str="create user $user_name"
-            CONFIRM
-            if [ "$user_name" != "" ] && [ "$user_password" != "" ]
-            then
-                # Create User
-                query="CREATE USER '$user_name'@'localhost' IDENTIFIED BY '$user_password';"
-                SQLQUERY
-            else
-                clear
-                warning="User name and password cannot be empty"
-                WARNING
-            fi
+            while [ "$user_name" == "" ]
+            do
+                SHOW_USERS
+                echo -e "\n> Enter New User Name... (Can cancel/confirm at next step)"
+                echo "----------------------"
+                read user_name
+
+                # Confirm passwords are the same
+                while [ true ] 
+                do
+                    echo -e "\n----------------------"
+                    echo "> Enter New User Password?"
+                    echo "----------------------"
+                    read -s user_password
+                    echo
+                    echo "> Repeat Password?"
+                    read -s user_password2
+                    echo
+                    if [ "$user_password" != "$user_password2" ]; 
+                    then
+                        clear
+                        warning="Passwords do not match"
+                        WARNING
+                    else
+                        break
+                    fi  
+                done
+
+                # Check Username
+                if [ "$user_name" != "" ]; then
+                    query="CREATE USER '$user_name'@'localhost' IDENTIFIED BY '$user_password';"
+                    # Get confirmation (str is description of operation used in confirmation message) 
+                    str="create user $user_name"
+                    CONFIRM
+                    SQLQUERY
+                    clear
+                    break
+                else
+                    clear
+                    warning="User name cannot be empty"
+                    WARNING
+                fi
+            done
             SHOW_USERS
         ;;
         # Drop/Delete a Database User
@@ -291,22 +311,27 @@ fi
             echo "=================================="
             echo " DROP/DELETE A DATABASE USER"
             echo "=================================="
-            SHOW_USERS
-            echo -e "\n> Which User To Drop?"
-            echo "----------------------"
-            read user_name
-            str="drop/delete user $user_name"
-            CONFIRM
-            if [ "$user_name" != "" ]; 
-            then
-                query="DROP USER $user_name@'localhost';"
-                #clear
-                SQLQUERY
-            else
-                clear
-                warning="User name cannot be empty"
-                WARNING
-            fi
+           
+            while [ "$user_name" == "" ]
+            do
+                SHOW_USERS
+                echo -e "\n> Which User To Drop? (Can cancel/confirm at next step)"
+                echo "----------------------"
+                read user_name
+                if [ "$user_name" != "" ]; then
+                    query="DROP USER '$user_name'@'localhost';"
+                    # Get confirmation 
+                    str="drop/delete user $user_name"
+                    CONFIRM
+                    SQLQUERY
+                    clear
+                    break
+                else
+                    clear
+                    warning="User name cannot be empty"
+                    WARNING
+                fi
+            done
             SHOW_USERS
         ;;
         # Add A User To A Database
@@ -315,27 +340,53 @@ fi
             echo "=================================="
             echo " ADD USER TO DATABASE"
             echo "=================================="
-            SHOW_USERS
             
-            echo -e "\n> Which User To Add?"
-            echo "----------------------"
-            read user_name
-            clear
-            SHOW_USER_PERMISSIONS
-            SHOW_DATABASES
-
-            echo -e "\n----------------------"
-            echo "> Which Database To Add User?"
-            echo "----------------------"
-            read db_name
-
-            # Get confirmation
-            str="add user $user_name to database $db_name"
-            CONFIRM
-
-            query="GRANT ALL PRIVILEGES ON $db_name.* TO '$user_name'@'localhost'; FLUSH PRIVILEGES;"
-            SQLQUERY
-            clear
+            while [ "$user_name" == "" ]
+            do
+                SHOW_USERS
+                echo -e "\n> Which User To Add?"
+                echo "----------------------"
+                read user_name
+                if [ "$user_name" != "" ]; then
+                    clear
+                    break
+                else
+                    clear
+                    warning="User name cannot be empty"
+                    WARNING
+                fi
+            done
+            while [ "$db_name" == "" ]
+            do
+                SHOW_DATABASES
+                SHOW_USER_PERMISSIONS
+                echo -e "\n> Which Database To Add User To?"
+                echo "----------------------"
+                read db_name
+                if [ "$db_name" != "" ]; then
+                    break
+                else
+                    clear
+                    warning="Database name cannot be empty"
+                    WARNING
+                fi
+            done
+                
+            if [ "$user_name" != "" ] && [ "$db_name" != "" ]; then
+                query="GRANT ALL PRIVILEGES ON $db_name.* TO '$user_name'@'localhost';"
+                # Get confirmation
+                str="add user $user_name to database $db_name"
+                CONFIRM
+                SQLQUERY
+                clear
+                break
+            else
+                clear
+                warning="User name and database name cannot be empty"
+                WARNING
+            fi
+                
+            
 
             echo "----------------------"
             echo "Updated Permissions: >"
@@ -349,40 +400,58 @@ fi
             echo "=================================="
             echo " REMOVE USER FROM DATABASE"
             echo "=================================="
-            SHOW_USERS
+           
+            while [ "$user_name" == "" ] || [ "$db_name" == "" ]
+            do 
+                SHOW_USERS
 
-            echo -e "\n> Which User To Remove?"
-            echo "----------------------"
-            read user_name
-            clear
-            SHOW_USER_PERMISSIONS
-            SHOW_DATABASES
+                echo -e "\n> Which User To Remove?"
+                echo "----------------------"
+                read user_name
+                clear
+                SHOW_DATABASES
+                SHOW_USER_PERMISSIONS
 
-            echo -e "\n----------------------"
-            echo "> Which Database To Remove User?"
-            read db_name
+                echo -e "\n----------------------"
+                echo "> Which Database To Remove User? (Can cancel/confirm at next step)"
+                read db_name
 
-            # Get confirmation
-            str="remove user $user_name from database $db_name"
-            CONFIRM
-
-            query="REVOKE ALL PRIVILEGES ON $db_name.* FROM '$user_name'@'localhost'; FLUSH PRIVILEGES;"
-            SQLQUERY
-            clear
-
-            echo "----------------------"
-            echo "Updated Permissions: >"
-            echo "----------------------"
+                if [ "$user_name" != "" ] && [ "$db_name" != "" ]; then
+                    query="REVOKE ALL PRIVILEGES ON $db_name.* FROM '$user_name'@'localhost';"
+                    # Get confirmation
+                    str="remove user $user_name from database $db_name"
+                    CONFIRM
+                    SQLQUERY
+                    clear
+                    break
+                else
+                    clear
+                    warning="User name and database name cannot be empty"
+                    WARNING
+                fi
+            done
             SHOW_USER_PERMISSIONS
         ;;
         # Show The Existing Database Tables
         st | showtables)
             clear
-            SHOW_DATABASES
-            echo -e "\n----------------------"
-            echo "> Which Database To Show Tables?"
-            read db_name
-            SHOW_TABLES
+            while [ "$db_name" == "" ]
+            do
+                SHOW_DATABASES
+                echo -e "\n> Which Database To Show Tables?"
+                echo "----------------------"
+                read db_name
+                if [ "$db_name" != "" ]; 
+                then
+                    clear
+                    SHOW_TABLES
+                    break
+                else
+                    clear
+                    warning="Database name cannot be empty"
+                    WARNING
+                fi
+            done
         ;;
         
         # Create A New Database Table
@@ -391,17 +460,43 @@ fi
             echo "=================================="
             echo " CREATE NEW TABLE"
             echo "=================================="
-            SHOW_DATABASES
-            echo -e "\n----------------------"
-            echo "> Which Database To Create Table?"
-            read db_name
-            SHOW_TABLES
-            echo -e "\n----------------------"
-            echo "> Enter New Table Name"
-            read table_name
-            # Get confirmation (str is description of operation used in confirmation message) 
-            str="create table $table_name"
-            CONFIRM
+
+            while [ "$db_name" == "" ]
+            do
+                SHOW_DATABASES
+                echo -e "\n----------------------"
+                echo "> Which Database To Create Table?"
+                read db_name
+                if [ "$db_name" != "" ]; 
+                then
+                    clear
+                    break
+                else
+                    clear
+                    warning="Database name cannot be empty"
+                    WARNING
+                fi
+            done
+            while [ "$table_name" == "" ]
+            do
+                SHOW_TABLES
+                echo -e "\n----------------------"
+                echo "> Enter New Table Name... (Can cancel/confirm at next step)"
+                read table_name
+                if [ "$table_name" != "" ]; 
+                then
+                    # Get confirmation (str is description of operation used in confirmation message) 
+                    str="create table $table_name"
+                    CONFIRM
+                    clear
+                    break
+                else
+                    clear
+                    warning="Table name cannot be empty"
+                    WARNING
+                fi
+            done
+            
             if [ "$table_name" != "" ]; 
             then
                 query="CREATE TABLE $db_name.$table_name (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, name VARCHAR(30) NOT NULL, email VARCHAR(50), reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);"
@@ -420,26 +515,46 @@ fi
             echo "=================================="
             echo " DROP/DELETE A DATABASE TABLE"
             echo "=================================="
-            SHOW_DATABASES
-            echo -e "\n----------------------"
-            echo "> Which Database To Drop Table?"
-            read db_name
-            SHOW_TABLES
-            echo -e "\n----------------------"
-            echo "> Which Table To Drop?"
-            read table_name
-            # Get confirmation (str is description of operation used in confirmation message) 
-            str="drop/delete table $table_name"
-            CONFIRM
-            if [ "$table_name" != "" ]; 
-            then
-                query="DROP TABLE $db_name.$table_name;"
-                SQLQUERY
-            else
-                clear
-                warning="Table name cannot be empty"
-                WARNING
-            fi
+
+            while [ "$db_name" == "" ]
+            do
+                SHOW_DATABASES
+                echo -e "\n----------------------"
+                echo "> Which Database To Drop Table?"
+                read db_name
+                if [ "$db_name" != "" ]; 
+                then
+                    clear
+                    break
+                else
+                    clear
+                    warning="Database name cannot be empty"
+                    WARNING
+                fi
+            done
+
+            while [ "$table_name" == "" ]
+            do
+                SHOW_TABLES
+                echo -e "\n----------------------"
+                echo "> Which Table To Drop? (Can cancel/confirm at next step)"
+                read table_name
+
+                if [ "$table_name" != "" ]; 
+                then
+                    query="DROP TABLE $db_name.$table_name;"
+                    # Get confirmation
+                    str="drop table $table_name in database $db_name"
+                    CONFIRM
+                    SQLQUERY
+                    clear
+                    break
+                else
+                    clear
+                    warning="Table name cannot be empty"
+                    WARNING
+                fi
+            done
             SHOW_TABLES
         ;;
 
@@ -449,14 +564,38 @@ fi
             echo "=================================="
             echo " SHOW DATABASE TABLE COLUMNS"
             echo "=================================="
-            SHOW_DATABASES
-            echo -e "\n----------------------"
-            echo "> Which Database To Show Table Columns?"
-            read db_name
-            SHOW_TABLES
-            echo -e "\n----------------------"
-            echo "> Which Table To Show Columns?"
-            read table_name
+            while [ "$db_name" == "" ]
+            do
+                SHOW_DATABASES
+                echo -e "\n----------------------"
+                echo "> Which Database To Show Columns?"
+                read db_name
+                if [ "$db_name" != "" ]; 
+                then
+                    clear
+                    break
+                else
+                    clear
+                    warning="Database name cannot be empty"
+                    WARNING
+                fi
+            done
+            while [ "$table_name" == "" ]
+            do
+                SHOW_TABLES
+                echo -e "\n----------------------"
+                echo "> Which Table To Show Columns?"
+                read table_name
+                if [ "$table_name" != "" ]; 
+                then
+                    clear
+                    break
+                else
+                    clear
+                    warning="Table name cannot be empty"
+                    WARNING
+                fi
+            done
             SHOW_COLUMNS
         ;;
         
@@ -466,21 +605,57 @@ fi
             echo "=================================="
             echo " SELECT DATA FROM DATABASE TABLE"
             echo "=================================="
-            SHOW_DATABASES
-            echo -e "\n----------------------"
-            echo "> Which Database To Select Data From?"
-            read db_name
-            SHOW_TABLES
-            echo -e "\n----------------------"
-            echo "> Which Table To Select Data From?"
-            read table_name
-            SHOW_COLUMNS
-            echo -e "\n----------------------"
-            echo "> Which Columns To Select Data From (use comma between multiple or use * for all)?"
-            read column_name
-            query="USE $db_name;"
-            query+="SELECT $column_name FROM $table_name;"
-            SQLQUERY
+            while [ "$db_name" == "" ]
+            do
+                SHOW_DATABASES
+                echo -e "\n----------------------"
+                echo "> Which Database To Select Data From?"
+                read db_name
+                if [ "$db_name" != "" ]; 
+                then
+                    clear
+                    break
+                else
+                    clear
+                    warning="Database name cannot be empty"
+                    WARNING
+                fi
+            done
+            while [ "$table_name" == "" ]
+            do
+                SHOW_TABLES
+                echo -e "\n----------------------"
+                echo "> Which Table To Select Data From?"
+                read table_name
+                if [ "$table_name" != "" ]; 
+                then
+                    clear
+                    break
+                else
+                    clear
+                    warning="Table name cannot be empty"
+                    WARNING
+                fi
+            done
+            while [ "$column_name" == "" ]  
+            do
+                SHOW_COLUMNS
+                echo -e "\n----------------------"
+                echo "> Which Column To Select Data From?"
+                read column_name
+                if [ "$column_name" != "" ]; 
+                then
+                    clear
+                    query="USE $db_name;"
+                    query+="SELECT $column_name FROM $table_name;"
+                    SQLQUERY
+                    break
+                else
+                    clear
+                    warning="Column name cannot be empty"
+                    WARNING
+                fi
+            done
         ;;
 
         x | exit)

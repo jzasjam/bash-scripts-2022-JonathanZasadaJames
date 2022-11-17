@@ -11,7 +11,7 @@ echo "=============================="
     read confirmation;
     if [ "$confirmation" = "y" ]
     then
-        sudo bash load-www.sh http://localhost/
+        bash load-www.sh http://localhost/
     fi
 
 # Check if Apache is running
@@ -56,5 +56,5 @@ echo "=============================="
     read confirmation;
     if [ "$confirmation" = "y" ]
     then
-        sudo bash load-www.sh http://localhost/
+        bash load-www.sh http://localhost/
     fi

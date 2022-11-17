@@ -22,7 +22,9 @@ operations[$i]="w  | www        Open A Web Page\n"; ((i++))
 
 # LAMP Stack Setup & Management
 operations[$i]="u  | update     Update and Upgrade"; ((i++))
-operations[$i]="i  | install    Install Packages"; ((i++))
+operations[$i]="s  | status     Service Status (Apache/MariaDB)"; ((i++))
+operations[$i]="i  | install    Install Packages (Apache/MariaDB/PHP/Wordpress)\n"; ((i++))
+
 operations[$i]="db | database   Database Management"; ((i++))
 operations[$i]="hp | homepage   Create Homepage\n"; ((i++))
 
@@ -99,6 +101,10 @@ function RESTART(){
         i | install)
             sudo bash install.sh $2
         ;;
+        # Service Status
+        s | status)
+            bash service-status.sh $2
+        ;;
         # Updates and Upgrades
         u | update)
             echo "==================="
@@ -113,7 +119,7 @@ function RESTART(){
         w | www)
             bash load-www.sh $2
         ;;
-        # CAUTION: Remove all packages, databases + installs
+        # CAUTION: Removes all packages, databases + installs
         reset)
             sudo bash reset.sh
         ;;
