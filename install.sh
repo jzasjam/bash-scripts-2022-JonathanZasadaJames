@@ -11,6 +11,15 @@ COLOR='\033[0;36m' # Cyan
         bash $thisFile 
     }
 
+# Display a warning message 
+function WARNING(){
+    RED='\033[0;31m'
+    BRed='\033[1;31m' #Bold Red
+    printf "${BRed}"
+    printf "WARNING: $warning"
+    printf "${COLOR}\n"   
+}
+
 # Create an array of install options
     i=0
     operations[$i]=" a  | apache     Install Apache"; ((i++))
@@ -25,7 +34,7 @@ COLOR='\033[0;36m' # Cyan
 
 
 task=$1
-if [ test -z "$task" ]
+if test -z "$task" 
 then
     echo "============================="
     echo "What Do You Want To Install?"
@@ -64,7 +73,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "=================================="
                 echo -e "\n Current Version:"
                 echo "----------------"
-                if [ ! command -v mariadb &> /dev/null ] 
+                if ! command -v mariadb &> /dev/null
                 then
                     echo "MariaDB Not Installed"
                 else
@@ -73,7 +82,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "----------------"
                 echo " Current Status:"
                 echo "----------------"
-                if [ ! command -v systemctl &> /dev/null ] 
+                if ! command -v systemctl &> /dev/null
                 then
                     sudo systemctl status mariadb
                 else
@@ -103,7 +112,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "y" | sudo apt install mariadb-server mariadb-client
 
                 # After install start and enable
-                if [ ! command -v systemctl &> /dev/null ] 
+                if ! command -v systemctl &> /dev/null
                 then
                     sudo systemctl start mariadb
                     sudo systemctl enable mariadb
@@ -119,7 +128,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "-------------------"
                 sudo mysql_secure_installation
                 # After mysql_secure_installation install restart
-                if [ ! command -v systemctl &> /dev/null ]
+                if ! command -v systemctl &> /dev/null
                 then
                     sudo systemctl restart mariadb
                 else
@@ -163,7 +172,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo -e "\nCurrent Version:"
                 echo "----------------"
                 # if apache2 is installed
-                if [ ! command -v apache2 &> /dev/null ]
+                if ! command -v apache2 &> /dev/null
                 then
                     echo "Apache Not Installed"
                 else
@@ -173,7 +182,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo -e "\n----------------"
                 echo " Current Status:"
                 echo "----------------"
-                if [ ! command -v systemctl &> /dev/null ] 
+                if ! command -v systemctl &> /dev/null
                 then
                     sudo systemctl status apache2
                 else
@@ -226,7 +235,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "----------------"
 
                 # Restart Apache & get status
-                if [ ! command -v systemctl &> /dev/null ] 
+                if ! command -v systemctl &> /dev/null
                 then
                     sudo systemctl restart apache2
                     sudo systemctl status apache2
@@ -450,8 +459,10 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "-------------------"
                 echo " Wordpress Config File Created"
                 echo "-------------------"
-                cat /var/www/html/wp/wp-config.php
+                #cat /var/www/html/wp/wp-config.php
                 echo -e "\n==================="
+                echo " Wordpress Installed"
+                echo "==================="
 
                 # Offer to view Wordpress Site
                 echo "> Want to view http://localhost/wp? (y/n)"
