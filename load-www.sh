@@ -47,4 +47,6 @@ COLOR='\033[0m' # No Color
     fi
 
 # Open URL in default browser
-    xdg-open $url
+    #xdg-open $url
+    # Open quietly and in background
+    bash -c "xdg-open $url" 2> /dev/null
