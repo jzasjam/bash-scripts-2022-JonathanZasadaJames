@@ -33,18 +33,29 @@ function APACHE_STATUS(){
         if ! command -v systemctl &> /dev/null
         then
             #sudo systemctl status apache2
-            if [ `sudo systemctl status apache2 | grep -q "is running"` ] || [ `sudo systemctl status apache2 | grep -q "active (exited)"` ] 
+            if sudo systemctl status apache2 | grep -q "is running" || sudo systemctl status apache2 | grep -q "active (exited)";
             then
                 status=1
             fi
         else
             # ON WSL
             #sudo service apache2 status
-            if [ `sudo systemctl status apache2 | grep -q "is running"` ] || [ `sudo systemctl status apache2 | grep -q "active (exited)"` ] 
+            if sudo service apache2 status | grep -q "is running" || sudo systemctl status apache2 | grep -q "active (exited)";
             then
                 status=1
             fi
         fi
+        # Try to check the service status another way if status is 0    
+        : '
+        if [ $status -eq 0 ]
+        then
+            apache="$(sudo service --status-all > /dev/null | grep apache2)"=
+            if [ "$apache" == " [ + ]  apache2" ]
+            then
+                status=1
+            fi
+        fi
+        '
         if [ $status -eq 1 ]
         then
             message="Apache Is Running"
@@ -66,21 +77,36 @@ function MARIADB_STATUS(){
         echo "MariaDB Not Installed"
     else
         status=0
+        
+
         if [ ! command -v systemctl &> /dev/null ] 
         then
             #sudo systemctl status mariadb
-            if [ `sudo systemctl status mariadb | grep -q "Uptime"` ] || [ `sudo systemctl status mariadb | grep -q "active (running)"` ] 
+            if sudo systemctl status mariadb | grep -q "Uptime" || sudo service mysql status | grep -q "active (running)";
             then
                 status=1
             fi 
         else
             # ON WSL
             #sudo service mysql status
-            if [ `sudo systemctl status mariadb | grep -q "Uptime"` ] || [ `sudo systemctl status mariadb | grep -q "active (running)"` ]  
+            if sudo service mysql status | grep -q "Uptime" || sudo service mysql status | grep -q "active (running)";
             then
                 status=1
             fi
         fi
+        # Try to check the service status another way if status is 0
+        : '
+        if [ $status -eq 0 ]
+        then
+            mdb="$(sudo service --status-all > /dev/null | grep mariadb)"
+            mysql="$(sudo service --status-all > /dev/null | grep mysql)"
+            if [ "$mdb" == " [ + ]  mariadb" ] || [ "$mysql" == " [ + ]  mysql" ]
+            then
+                status=1
+            fi
+        fi
+        '
+
         if [ $status -eq 1 ]
         then
             message="MariaDB Is Running"

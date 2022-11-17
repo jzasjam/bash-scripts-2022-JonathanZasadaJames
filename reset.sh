@@ -22,6 +22,8 @@ then
             # ON WSL
             sudo service apache2 stop
         fi
+        sudo apt remove apache2 -y
+        sudo apt purge apache2 -y
         sudo apt remove apache2.* -y
 
     # Remove MariaDB/MySQL
