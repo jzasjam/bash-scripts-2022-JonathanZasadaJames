@@ -18,6 +18,7 @@ function COLOR_TEXT(){
     function RESTART(){
         clear
         bash $thisFile 
+        exit
     }
 
 # Check Apache Status

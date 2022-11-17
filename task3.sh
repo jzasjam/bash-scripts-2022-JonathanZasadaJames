@@ -43,6 +43,7 @@ function RESTART(){
     #echo -e "\n\n"
     clear
     bash $thisFile 
+    exit
 }
 
 # See If Command Line Argument Provided or Get User Input

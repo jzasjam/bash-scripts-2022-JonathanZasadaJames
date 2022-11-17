@@ -9,16 +9,17 @@ COLOR='\033[0;36m' # Cyan
     function RESTART(){
         clear
         bash $thisFile 
+        exit
     }
 
 # Display a warning message 
-function WARNING(){
-    RED='\033[0;31m'
-    BRed='\033[1;31m' #Bold Red
-    printf "${BRed}"
-    printf "WARNING: $warning"
-    printf "${COLOR}\n"   
-}
+    function WARNING(){
+        RED='\033[0;31m'
+        BRed='\033[1;31m' #Bold Red
+        printf "${BRed}"
+        printf "WARNING: $warning"
+        printf "${COLOR}\n"   
+    }
 
 # Create an array of install options
     i=0

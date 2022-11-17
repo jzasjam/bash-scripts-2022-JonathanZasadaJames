@@ -9,6 +9,7 @@ thisFile="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
 function RESTART(){
     clear
     bash $thisFile 
+    exit
 }
 
 
