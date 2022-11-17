@@ -29,10 +29,10 @@ Place the downloaded directory on your machine in an easy to access directory
 + **/html**                   - Directory containing template html for custom index.html
 + **/tests**                  - Directory containing some test files used with *demo.sh*
 + **create-homepage.sh**      - Script to take user input and create a custom index.html in /var/www/html
-+ **database.sh**             - MariaDB Datanase management tool (Show, Drow & Create; Databases, Tables & Users)
++ **database.sh**             - MariaDB Database management tool (Show, Drow & Create; Databases, Tables & Users)
 + **demo.sh**                 - Examples of some BASH functionality
 + **help.sh**                 - Help file with instructions for user
-+ **install.sh**              - LAMP Install helper tool for Apache, MariaDB, PHP and WP
++ **install.sh**              - LAMP Install helper tool for Apache, MariaDB, PHP and WP (also creates default index.html and phpinfo.php)
 + **load-www.sh**             - Load a webpage in the browser
 + **reset.sh**                - Removes all LAMP(+Wordpress) packages, files and databases.
 + **send-email.sh**           - Send an email to a chosen address (via SMTP connection)

@@ -20,82 +20,82 @@ COLOR='\033[0m' # No Color
     }
 
 # Display a message and get user confirmation
-function CONFIRM(){
-    echo -e "\n----------------------"
-    echo " CONFIRMATION"
-    echo "----------------------"
-    echo "> Are you sure you want to $str? (y/n)"
-    read confirmation;
+    function CONFIRM(){
+        echo -e "\n----------------------"
+        echo " CONFIRMATION"
+        echo "----------------------"
+        echo "> Are you sure you want to $str? (y/n)"
+        read confirmation;
 
-    if [ "$confirmation" == "y" ]
-    then
-        clear
-    else
-        if [ "$confirmation" == "n" ]
+        if [ "$confirmation" == "y" ]
         then
-            RESTART
+            clear
         else
-            echo "Invalid Input"
-            CONFIRM
+            if [ "$confirmation" == "n" ]
+            then
+                RESTART
+            else
+                echo "Invalid Input"
+                CONFIRM
+            fi
         fi
-    fi
-}
+    }
 
 # Function to configure the SMTP settings
-function CONFIGURE_SMTP(){
+    function CONFIGURE_SMTP(){
 
-    # Get the SMTP settings from the user
-    echo "=============================="
-    echo "Current Settings:"
-    echo "=============================="
-    root="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'root=' | cut -d'=' -f2)"
-    echo "Root Email: $root"
-    mailhub="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'mailhub=' | cut -d'=' -f2)"
-    echo "Mailhub: $mailhub"
-    hostname="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'hostname=' | cut -d'=' -f2)"
-    echo "Hostname: $hostname"
-    rewritedomain="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'rewriteDomain=' | cut -d'=' -f2)"
-    echo "RewriteDomain: $rewritedomain"
-    authuser="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'AuthUser=' | cut -d'=' -f2)"
-    echo "AuthUser: $authuser"
-    echo "-----------------"
+        # Get the SMTP settings from the user
+        echo "=============================="
+        echo "Current Settings:"
+        echo "=============================="
+        root="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'root=' | cut -d'=' -f2)"
+        echo "Root Email: $root"
+        mailhub="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'mailhub=' | cut -d'=' -f2)"
+        echo "Mailhub: $mailhub"
+        hostname="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'hostname=' | cut -d'=' -f2)"
+        echo "Hostname: $hostname"
+        rewritedomain="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'rewriteDomain=' | cut -d'=' -f2)"
+        echo "RewriteDomain: $rewritedomain"
+        authuser="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'AuthUser=' | cut -d'=' -f2)"
+        echo "AuthUser: $authuser"
+        echo "-----------------"
 
-    str="Enter New Configuration Settings"
-    CONFIRM
+        str="Enter New Configuration Settings"
+        CONFIRM
 
-    echo "y" | sudo apt-get install sendmail
+        echo "y" | sudo apt-get install sendmail
 
-    # UPDATE SMTP CONFIGURATION (/etc/ssmtp/ssmtp.conf)
-    
-    sudo cp ssmtp.conf.template /etc/ssmtp/ssmtp.conf
-    
-    # Ask for sending email address
-    echo -e "\n--------------------------"
-    echo "> Enter your sending email address:"
-    read email;
-    sudo sed -i "s/{root}/$email/g" /etc/ssmtp/ssmtp.conf
-    sudo sed -i "s/{hostname}/$email/g" /etc/ssmtp/ssmtp.conf
-    # Gett the domain name from the email address
-    domain="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'root=' | cut -d'@' -f2)"
-    sudo sed -i "s/{rewritedomain}/$domain/g" /etc/ssmtp/ssmtp.conf
+        # UPDATE SMTP CONFIGURATION (/etc/ssmtp/ssmtp.conf)
+        
+        sudo cp ssmtp.conf.template /etc/ssmtp/ssmtp.conf
+        
+        # Ask for sending email address
+        echo -e "\n--------------------------"
+        echo "> Enter your sending email address:"
+        read email;
+        sudo sed -i "s/{root}/$email/g" /etc/ssmtp/ssmtp.conf
+        sudo sed -i "s/{hostname}/$email/g" /etc/ssmtp/ssmtp.conf
+        # Gett the domain name from the email address
+        domain="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'root=' | cut -d'@' -f2)"
+        sudo sed -i "s/{rewritedomain}/$domain/g" /etc/ssmtp/ssmtp.conf
 
-    # Ask for SMTP Credentials
-    echo "--------------------------"
-    echo "> Enter your SMTP mail server (with port): (e.g. smtp.sendgrid.com:587)"
-    read mailhub;
-    sudo sed -i "s/{mailhub}/$mailhub/g" /etc/ssmtp/ssmtp.conf
-    
-    echo "--------------------------"
-    echo "> Enter your SMTP username: (eg. apikey)"
-    read authuser;
-    sudo sed -i "s/{authuser}/$authuser/g" /etc/ssmtp/ssmtp.conf
+        # Ask for SMTP Credentials
+        echo "--------------------------"
+        echo "> Enter your SMTP mail server (with port): (e.g. smtp.sendgrid.com:587)"
+        read mailhub;
+        sudo sed -i "s/{mailhub}/$mailhub/g" /etc/ssmtp/ssmtp.conf
+        
+        echo "--------------------------"
+        echo "> Enter your SMTP username: (eg. apikey)"
+        read authuser;
+        sudo sed -i "s/{authuser}/$authuser/g" /etc/ssmtp/ssmtp.conf
 
-    echo "--------------------------"
-    echo "> Enter your SMTP password/API Key:"
-    read authpass;
-    sudo sed -i "s/{authpass}/$authpass/g" /etc/ssmtp/ssmtp.conf
+        echo "--------------------------"
+        echo "> Enter your SMTP password/API Key:"
+        read authpass;
+        sudo sed -i "s/{authpass}/$authpass/g" /etc/ssmtp/ssmtp.conf
 
-}
+    }
 
 
 # Create an array of install options
