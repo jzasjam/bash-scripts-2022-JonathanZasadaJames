@@ -20,9 +20,6 @@ function COLOR_TEXT(){
         bash $thisFile 
     }
 
-#------------------------------------------------------------
-# Output Starts Here
-
 # Check Apache Status
 function APACHE_STATUS(){
     # if apache2 is installed
@@ -94,8 +91,9 @@ function MARIADB_STATUS(){
     fi
 }
 
+
 #------------------------------------------------------------
-# Menu Options Start Here
+# Output Starts Here
 
 # Create an array of options
     i=0
@@ -127,8 +125,7 @@ function MARIADB_STATUS(){
 
 #------------------------------------------------------------
 # Chosen Task Starts Here
-
-
+ 
 # Case Statement Menu Selecting Task  
     case $task in
 
@@ -209,7 +206,7 @@ function MARIADB_STATUS(){
         # Exit
         x | exit)
             echo "======================"
-            echo " Leaving Install Menu"
+            echo " Leaving Status Menu"
             echo "======================"
             exit
         ;;
