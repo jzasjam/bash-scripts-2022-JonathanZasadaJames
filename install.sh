@@ -83,13 +83,8 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "----------------"
                 echo " Current Status:"
                 echo "----------------"
-                if ! command -v systemctl &> /dev/null
-                then
-                    sudo systemctl status mariadb
-                else
-                    # ON WSL: https://linuxhandbook.com/system-has-not-been-booted-with-systemd/#:~:text=Linode-,How%20to%20fix%20'System%20has%20not%20been%20booted%20with%20systemd,commands%20have%20somewhat%20similar%20syntax.
-                    sudo service mysql status
-                fi
+                sudo bash service-status.sh qs mariadb
+
                 echo "----------------"
                 echo " Install Maria DB? (y/n)"
                 echo "----------------"
@@ -113,15 +108,9 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "y" | sudo apt install mariadb-server mariadb-client
 
                 # After install start and enable
-                if ! command -v systemctl &> /dev/null
-                then
-                    sudo systemctl start mariadb
-                    sudo systemctl enable mariadb
-                else
-                    # ON WSL
-                    sudo service mysql start
-                    sudo systemctl enable mariadb
-                fi
+                sudo bash service-status.sh start mariadb
+                sudo systemctl enable mariadb
+              
 
                 # Secure Install
                 clear
@@ -149,13 +138,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo -e "\n----------------"
                 echo " Current Status:"
                 echo "----------------"
-                if ! command -v systemctl &> /dev/null
-                then
-                    sudo systemctl status mariadb
-                else
-                    # ON WSL
-                    sudo service mysql status
-                fi
+                sudo bash service-status.sh quickstatus mariadb
                 echo "==================="
             else
                 echo 'Install Cancelled'
@@ -184,14 +167,10 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo -e "\n----------------"
                 echo " Current Status:"
                 echo "----------------"
-                if ! command -v systemctl &> /dev/null
-                then
-                    sudo systemctl status apache2
-                else
-                    # ON WSL
-                    sudo service apache2 status
-                fi
-                sudo apachectl status
+                 # Start Apache
+                sudo bash service-status.sh start apache
+                sudo bash service-status.sh qs apache
+                
                 echo -e "\n----------------"
                 echo " Install Apache? (y/n)"
                 echo "----------------"
@@ -237,16 +216,10 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "----------------"
 
                 # Restart Apache & get status
-                if ! command -v systemctl &> /dev/null
-                then
-                    sudo systemctl restart apache2
-                    sudo systemctl status apache2
-                else
-                    # ON WSL
-                    sudo service apache2 restart
-                    sudo service apache2 status
-                fi
-                sudo apachectl status
+                 # Start Apache
+                sudo bash service-status.sh restart apache
+                sudo bash service-status.sh qs apache
+                
                 echo "==================="
 
                 # Create index.html if it doesn't exist

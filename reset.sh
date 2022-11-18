@@ -15,13 +15,9 @@ then
         echo "--------------------------"
         echo "Removing Apache"
         echo "--------------------------"
-        if ! command -v systemctl &> /dev/null
-        then
-            sudo systemctl stop apache2
-        else
-            # ON WSL
-            sudo service apache2 stop
-        fi
+        
+        sudo bash service-status.sh stop apache
+
         sudo apt remove apache2 -y
         sudo apt purge apache2 -y
         sudo apt remove apache2.* -y
@@ -31,13 +27,7 @@ then
         echo "--------------------------"
         echo "Removing MariaDB/MySQL"
         echo "--------------------------"
-        if ! command -v systemctl &> /dev/null
-        then
-            sudo systemctl stop mariadb
-        else
-            # ON WSL
-            sudo service mysql stop
-        fi
+        sudo bash service-status.sh stop mariadb
         sudo /etc/init.d/mysql stop
         sudo apt-get purge mysql* mariadb*
 
