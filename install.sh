@@ -120,6 +120,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 else
                     # ON WSL
                     sudo service mysql start
+                    sudo systemctl enable mariadb
                 fi
 
                 # Secure Install
