@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 COLOR='\033[0m' # No Color
 
 # Function to display a warning message 
@@ -11,6 +12,10 @@ COLOR='\033[0m' # No Color
         printf "${COLOR}\n"   
     }
 
+# Start Apache
+    sudo bash service-status.sh start apache
+    clear
+    
 # If no URL is provided in command line argument, set up asking for user input
     if [ -z "$1" ]
     then

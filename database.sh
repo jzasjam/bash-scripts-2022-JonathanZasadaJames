@@ -82,6 +82,9 @@ function CONFIRM(){
     echo "> Are you sure you want to $str? (y/n)"
     read confirmation;
 
+    # Convert input to lower case
+    confirmation=$(echo $confirmation | tr '[:upper:]' '[:lower:]')
+
     if [ "$confirmation" == "y" ]
     then
         clear
@@ -173,16 +176,15 @@ then
         sudo bash install.sh MariaDB
     else
         # If MariaDB is installed, start service
-        if ! command -v systemctl &> /dev/null
-        then
-            sudo systemctl start mariadb
-        else
-            # ON WSL
-            sudo service mysql start
-        fi
+        #sudo bash service-status.sh start mariadb
+        bash -c "sudo bash service-status.sh start mariadb" 2> /dev/null
+        clear
     fi
 
 fi
+
+# Convert entered task to lower case
+    task=$(echo $task | tr '[:upper:]' '[:lower:]')
 
 # Case Statement Selecting Task  
     case $task in

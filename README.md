@@ -28,6 +28,7 @@ Place the downloaded directory on your machine in an easy to access directory
 > eg: `bash install.sh` or `bash install.sh php` to install immediately
 + **/html**                   - Directory containing template html for custom index.html
 + **/tests**                  - Directory containing some test files used with *demo.sh*
++ **cpu-usage.sh**            - Experimental: Display CPU usage in live time for 10 secs
 + **create-homepage.sh**      - Script to take user input and create a custom index.html in /var/www/html
 + **database.sh**             - MariaDB Database management tool (Show, Drow & Create; Databases, Tables & Users)
 + **demo.sh**                 - Examples of some BASH functionality
@@ -37,4 +38,5 @@ Place the downloaded directory on your machine in an easy to access directory
 + **reset.sh**                - Removes all LAMP(+Wordpress) packages, files and databases.
 + **send-email.sh**           - Send an email to a chosen address (via SMTP connection)
 + **service-status.sh**       - Get the latest status, start, stop and restart for Apache and MariaDB
++ **system-status.sh**        - System, Service, User and Database stats
 + **task3.sh**                - Main menu script to guide user

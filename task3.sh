@@ -16,25 +16,26 @@ printf "${NC}"
 # -----------------------------------------------------------
 i=0
 # Basic tasks
-operations[$i]="h  | help       Get Some Help"; ((i++))
+operations[$i]="h   | help       Get Some Help\n"; ((i++))
 #operations[$i]="d  | demo       See Bash Demo"; ((i++))
-operations[$i]="w  | www        Open A Web Page"; ((i++))
-operations[$i]="e  | email      Send An Email\n"; ((i++))
+operations[$i]="w   | www        Open A Web Page"; ((i++))
+operations[$i]="e   | email      Send An Email\n"; ((i++))
 
 # LAMP Stack Setup & Management
-operations[$i]="u  | update     Update and Upgrade"; ((i++))
-operations[$i]="s  | status     Service Status (Apache/MariaDB)"; ((i++))
-operations[$i]="i  | install    Install Packages (Apache/MariaDB/PHP/Wordpress)\n"; ((i++))
+operations[$i]="s   | status     System Status (Users/Services/CPU/MEM)"; ((i++))
+operations[$i]="sv  | service    Service Status & Management (Apache/MariaDB)"; ((i++))
+operations[$i]="u   | update     Update and Upgrade"; ((i++))
+operations[$i]="i   | install    Install Packages (Apache/MariaDB/PHP/Wordpress)\n"; ((i++))
 
-operations[$i]="db | database   Database Management"; ((i++))
-operations[$i]="hp | homepage   Create Homepage\n"; ((i++))
+operations[$i]="db  | database   Database Management"; ((i++))
+operations[$i]="hp  | homepage   Create Homepage\n"; ((i++))
 
 # OS Tasks
 #operations[$i]="us | user       **User Management\n"; ((i++))
 #operations[$i]="c  | cpu        **CPU Monitor to Log\n"; ((i++))
 
 # Exit
-operations[$i]="x  | exit       Quit / Exit"; ((i++))
+operations[$i]="x   | exit       Quit / Exit"; ((i++))
 
 
 # Get this file name to use in restart function and reference elsewhere
@@ -54,12 +55,12 @@ function RESTART(){
         # If No Command Line Argument Provided
         clear
         echo "=================================================================="
-        echo "   AVAILABLE TASKS"
+        echo "      WELCOME TO THE LAMP SERVER SETUP & MANAGEMENT SCRIPT"
         echo "=================================================================="
-        echo " NOTE: Use 'bash $thisFile {argument}' to start automatically"
+        echo " NOTE: Use commands like 'bash $thisFile {argument}' to start them automatically"
 
         echo -e "\n-------------------------------------"
-        echo -e " Options(s)\tDescription"
+        echo -e " Options(s) \t Description"
         echo "-------------------------------------"
 
         # Loop through the array and print out the arguments and descriptions menu 
@@ -107,8 +108,12 @@ function RESTART(){
         i | install)
             sudo bash install.sh $2
         ;;
-        # Service Status
+        # System Status
         s | status)
+            bash system-status.sh $2
+        ;;
+        # Service Status
+        sv | service)
             bash service-status.sh $2
         ;;
         # Updates and Upgrades

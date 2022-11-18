@@ -2,16 +2,16 @@
 
 # SET THE COLORS
 COLOR='\033[0m' # No Color
-# COLOR ARRAY FOR STATUS TEXT
-COL[0]='\033[1;31m' #Bold Red
-COL[1]='\033[1;32m' #Bold Green
 
 # Display message in colour depending on the status
-function COLOR_TEXT(){
-    printf "${COL[$status]}"
-    printf " $message"
-    printf "${COLOR}\n\n"    
-}
+    function COLOR_TEXT(){
+        # COLOR ARRAY FOR STATUS TEXT
+        COL[0]='\033[1;31m' #Bold Red
+        COL[1]='\033[1;32m' #Bold Green
+        printf "${COL[$status]}"
+        printf " $message"
+        printf "${COLOR}\n\n"    
+    }
 
 # Get this file name to use in restart function and reference elsewhere
     thisFile="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
@@ -22,100 +22,100 @@ function COLOR_TEXT(){
     }
 
 # Check Apache Status
-function APACHE_STATUS(){
-    # if apache2 is installed
-    echo "--- Apache Status ---"
-    if [ ! command -v apache2 &> /dev/null ]
-    then
-        echo "Apache Is Not Installed"
-    else
-        status=0
-        if ! command -v systemctl &> /dev/null
+    function APACHE_STATUS(){
+        # if apache2 is installed
+        echo "--- Apache Status ---"
+        if [ ! command -v apache2 &> /dev/null ]
         then
-            #sudo systemctl status apache2
-            if sudo systemctl status apache2 | grep -q "is running" || sudo systemctl status apache2 | grep -q "Active: active ";
-            then
-                status=1
-            fi
+            echo "Apache Is Not Installed"
         else
-            # ON WSL
-            #sudo service apache2 status
-            if sudo service apache2 status | grep -q "is running" || sudo service apache2 status | grep -q "Active: active";
+            status=0
+            if ! command -v systemctl &> /dev/null
             then
-                status=1
+                #sudo systemctl status apache2
+                if sudo systemctl status apache2 | grep -q "is running" || sudo systemctl status apache2 | grep -q "Active: active ";
+                then
+                    status=1
+                fi
+            else
+                # ON WSL
+                #sudo service apache2 status
+                if sudo service apache2 status | grep -q "is running" || sudo service apache2 status | grep -q "Active: active";
+                then
+                    status=1
+                fi
             fi
-        fi
-        # Try to check the service status another way if status in --all is +    
-        : '
-        if [ $status -eq 0 ]
-        then
-            apache="$(sudo service --status-all > /dev/null | grep apache2)"=
-            if [ "$apache" == " [ + ]  apache2" ]
+            # Try to check the service status another way if status in --all is +    
+            : '
+            if [ $status -eq 0 ]
             then
-                status=1
+                apache="$(sudo service --status-all > /dev/null | grep apache2)"=
+                if [ "$apache" == " [ + ]  apache2" ]
+                then
+                    status=1
+                fi
             fi
+            '
+            if [ $status -eq 1 ]
+            then
+                message="Apache Is Running"
+                COLOR_TEXT
+            else
+                message="Apache Is Not Running"
+                COLOR_TEXT
+            fi
+            #sudo apachectl status
         fi
-        '
-        if [ $status -eq 1 ]
-        then
-            message="Apache Is Running"
-            COLOR_TEXT
-        else
-            message="Apache Is Not Running"
-            COLOR_TEXT
-        fi
-        #sudo apachectl status
-    fi
-}
+    }
 
 # Check MariaDB Status
-function MARIADB_STATUS(){
-    # if mariadb is installed
-    echo "--- MariaDB Status ---"
-    if [ ! command -v mariadb &> /dev/null ]
-    then
-        echo "MariaDB Not Installed"
-    else
-        status=0
-        
-        if [ ! command -v systemctl &> /dev/null ] 
+    function MARIADB_STATUS(){
+        # if mariadb is installed
+        echo "--- MariaDB Status ---"
+        if [ ! command -v mariadb &> /dev/null ]
         then
-            #sudo systemctl status mariadb
-            if sudo systemctl status mariadb | grep -q "Uptime" || sudo systemctl status mariadb | grep -q "active (running)";
-            then
-                status=1
-            fi 
+            echo "MariaDB Not Installed"
         else
-            # ON WSL
-            #sudo service mysql status
-            if sudo service mysql status | grep -q "Uptime" || sudo service mysql status | grep -q "active (running)";
+            status=0
+            
+            if [ ! command -v systemctl &> /dev/null ] 
             then
-                status=1
+                #sudo systemctl status mariadb
+                if sudo systemctl status mariadb | grep -q "Uptime" || sudo systemctl status mariadb | grep -q "active (running)";
+                then
+                    status=1
+                fi 
+            else
+                # ON WSL
+                #sudo service mysql status
+                if sudo service mysql status | grep -q "Uptime" || sudo service mysql status | grep -q "active (running)";
+                then
+                    status=1
+                fi
             fi
-        fi
-        # Try to check the service status another way if status is 0
-        : '
-        if [ $status -eq 0 ]
-        then
-            mdb="$(sudo service --status-all > /dev/null | grep mariadb)"
-            mysql="$(sudo service --status-all > /dev/null | grep mysql)"
-            if [ "$mdb" == " [ + ]  mariadb" ] || [ "$mysql" == " [ + ]  mysql" ]
+            # Try to check the service status another way if status is 0
+            : '
+            if [ $status -eq 0 ]
             then
-                status=1
+                mdb="$(sudo service --status-all > /dev/null | grep mariadb)"
+                mysql="$(sudo service --status-all > /dev/null | grep mysql)"
+                if [ "$mdb" == " [ + ]  mariadb" ] || [ "$mysql" == " [ + ]  mysql" ]
+                then
+                    status=1
+                fi
             fi
-        fi
-        '
+            '
 
-        if [ $status -eq 1 ]
-        then
-            message="MariaDB Is Running"
-            COLOR_TEXT
-        else
-            message="MariaDB Is Not Running"
-            COLOR_TEXT
+            if [ $status -eq 1 ]
+            then
+                message="MariaDB Is Running"
+                COLOR_TEXT
+            else
+                message="MariaDB Is Not Running"
+                COLOR_TEXT
+            fi
         fi
-    fi
-}
+    }
 
 
 #------------------------------------------------------------
@@ -129,32 +129,49 @@ function MARIADB_STATUS(){
     operations[$i]=" s | status     Full Service Status\n"; ((i++))
     operations[$i]=" x | exit       Leave This Menu\n"; ((i++))
 
-    echo "============================="
-    echo "What Do You Want To Do?"
-    echo -e "=============================\n"
 
-    APACHE_STATUS
-    MARIADB_STATUS
+    task=$1
+    subtask=$2
+    if [ -z "$task" ]
+    then
+        
+        echo "============================="
+        echo "What Do You Want To Do?"
+        echo -e "=============================\n"
 
-    echo -e "\n-------------------------------------"
-    echo -e " Options(s)\tDescription"
-    echo "-------------------------------------"
-    # Loop through the array and print out the arguments and descriptions menu 
-    for key in "${!operations[@]}"; do
-        printf "${operations[${key}]} \n"
-    done
+        APACHE_STATUS
+        MARIADB_STATUS
 
-    echo -e "\n-------------------------------------"
-    echo -e "You can start, stop, restart all or select individual services eg:\n  > start apache \n  > 1 a \n  > start a \n  > 1 apache \n - will all start apache (use m | mariadb for MariaDB))"
-    echo -e "-------------------------------------"
+        echo -e "\n-------------------------------------"
+        echo -e " Options(s)\tDescription"
+        echo "-------------------------------------"
+        # Loop through the array and print out the arguments and descriptions menu 
+        for key in "${!operations[@]}"; do
+            printf "${operations[${key}]} \n"
+        done
 
-    # Get User Input For Install
-    echo -e "\n\n> Select What To Do..."
-    read task   
-    clear
+        echo -e "\n-------------------------------------"
+        echo -e "You can start, stop, restart all or select individual services eg:\n  > start apache \n  > 1 a \n  > start a \n  > 1 apache \n - will all start apache (use m | mariadb for MariaDB))"
+        echo -e "-------------------------------------"
 
+        # Get User Input For Install
+        echo -e "\n\n> Select What To Do..."
+        read task   
+        clear
+    
+    fi
+
+    # Convert entered task to lower case
+    task=$(echo $task | tr '[:upper:]' '[:lower:]')
+
+    # Convert input to array to check for multiple arguments
     stringarray=($task)
     task=${stringarray[0]}
+    if [ ! ${stringarray[1]} ]
+    then
+        stringarray[1]="$2"
+    fi
+
 
 #------------------------------------------------------------
 # Chosen Task Starts Here
@@ -211,6 +228,18 @@ function MARIADB_STATUS(){
             then 
                 echo -e "\n Restarting MariaDB..."
                 sudo service mysql restart
+            fi
+        ;;
+
+        # Status
+        qs | quickstatus)
+            if [ "${stringarray[1]}" == "a" ] || [ "${stringarray[1]}" == "apache" ] || [ ! ${stringarray[1]} ]
+            then 
+                APACHE_STATUS
+            fi
+            if [ "${stringarray[1]}" == "m" ] || [ "${stringarray[1]}" == "mariadb" ] || [ ! ${stringarray[1]} ]
+            then 
+                MARIADB_STATUS
             fi
         ;;
 
@@ -275,7 +304,8 @@ function MARIADB_STATUS(){
 # Restart with menu (on enter) or end program if called by arguments
 if [ "$1" ] 
 then
-    echo "Task run in arguments complete - Bye!"
+    #echo "Task run in arguments complete - Bye!"
+    echo ""
 else
     echo -e "\n\n-----------------------"
     echo "Press Enter To Continue >>>"

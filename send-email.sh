@@ -27,6 +27,9 @@ COLOR='\033[0m' # No Color
         echo "> Are you sure you want to $str? (y/n)"
         read confirmation;
 
+        # Convert input to lower case
+        confirmation=$(echo $confirmation | tr '[:upper:]' '[:lower:]')
+
         if [ "$confirmation" == "y" ]
         then
             clear
@@ -46,7 +49,7 @@ COLOR='\033[0m' # No Color
 
         # Get the SMTP settings from the user
         echo "=============================="
-        echo "Current Settings:"
+        echo " Current SMTP Settings:"
         echo "=============================="
         root="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'root=' | cut -d'=' -f2)"
         echo "Root Email: $root"
@@ -136,6 +139,10 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
         # Send Email
         s | send)
             
+            # Start Apache
+                sudo bash service-status.sh start apache
+                clear
+
             # Get From Email value from root=value in conf file
                 from_email="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'root=' | cut -d'=' -f2)"
 
@@ -169,17 +176,21 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 from_email="$(sudo cat /etc/ssmtp/ssmtp.conf | grep 'root=' | cut -d'=' -f2)"
                 # echo $from_email
 
-                echo -e "\nSend Email"
-                echo -e "----------------------"
+                echo "=============================="
+                echo " Send An Email"
+                echo "=============================="
 
                 str="send an email"
                 CONFIRM
 
-                echo "Send To Email >"
+                echo "=============================="
+                echo " Email Details"
+                echo "=============================="
+                echo "> Enter Email To Send To:"
                 read email
-                echo "Subject >"
+                echo -e "\n> Subject:"
                 read subject
-                echo "Message >"
+                echo -e "\n> Message:"
                 read message
                 #echo $message | mail -s $subject $email
                 echo -e "Subject: $subject \nFrom:$from_email \n\n $message" | sendmail $email
