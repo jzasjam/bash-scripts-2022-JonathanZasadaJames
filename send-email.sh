@@ -106,7 +106,7 @@ COLOR='\033[0m' # No Color
     operations[$i]=" s  | send       Send An Email"; ((i++))
     operations[$i]=" c  | config     Configure SMTP\n"; ((i++))
 
-    operations[$i]=" x  | exit       Exit Install Menu"; ((i++))
+    operations[$i]=" x  | exit       Exit Email Menu"; ((i++))
 
 # If no URL is provided in command line argument, set up asking for user input
     if [ -z "$1" ]
