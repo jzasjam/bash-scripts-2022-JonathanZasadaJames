@@ -136,7 +136,7 @@ COLOR='\033[0m' # No Color
     then
         
         echo "============================="
-        echo "What Do You Want To Do?"
+        echo " What Do You Want To Do?"
         echo -e "=============================\n"
 
         APACHE_STATUS
@@ -151,7 +151,7 @@ COLOR='\033[0m' # No Color
         done
 
         echo -e "\n-------------------------------------"
-        echo -e "You can start, stop, restart all or select individual services eg:\n  > start apache \n  > 1 a \n  > start a \n  > 1 apache \n - will all start apache (use m | mariadb for MariaDB))"
+        echo -e " You can start, stop, restart all or select individual services eg:\n  > start apache \n  > 1 a \n  > start a \n  > 1 apache \n  ...will all start apache (use m | mariadb for MariaDB))"
         echo -e "-------------------------------------"
 
         # Get User Input For Install
@@ -231,7 +231,7 @@ COLOR='\033[0m' # No Color
             fi
         ;;
 
-        # Status
+        # Quick Status (display just the minimum when calling the script)
         qs | quickstatus)
             if [ "${stringarray[1]}" == "a" ] || [ "${stringarray[1]}" == "apache" ] || [ ! ${stringarray[1]} ]
             then 

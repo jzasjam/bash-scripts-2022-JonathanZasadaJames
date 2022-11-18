@@ -19,10 +19,10 @@ i=0
 operations[$i]="h   | help       Get Some Help\n"; ((i++))
 #operations[$i]="d  | demo       See Bash Demo"; ((i++))
 operations[$i]="w   | www        Open A Web Page"; ((i++))
-operations[$i]="e   | email      Send An Email\n"; ((i++))
+operations[$i]="e   | email      Send An Email (and configure SMTP)\n"; ((i++))
 
 # LAMP Stack Setup & Management
-operations[$i]="s   | status     System Status (Users/Services/CPU/MEM)"; ((i++))
+operations[$i]="s   | status     System Status Overview (Services/Users/CPU/MEM)"; ((i++))
 operations[$i]="sv  | service    Service Status & Management (Apache/MariaDB)"; ((i++))
 operations[$i]="u   | update     Update and Upgrade"; ((i++))
 operations[$i]="i   | install    Install Packages (Apache/MariaDB/PHP/Wordpress)\n"; ((i++))
