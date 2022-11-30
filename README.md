@@ -15,6 +15,7 @@ Place the downloaded directory on your machine in an easy to access directory
 
 ### Additonal Information
 ---------------------
+- The main bash file is 'Task3.sh', this should be launched first at it controls the menu system and launches the other bash files as required
 - Menu options are case insensitive
 - Use `bash task3.sh` to start and select a task from the menu
 - Use `bash task3.sh {argument}` to start a task automatically from the command line
@@ -24,7 +25,7 @@ Place the downloaded directory on your machine in an easy to access directory
 - (!) CAUTION: Do Not Use 'reset' unless you know what you are doing (will purge all installed packages, databases, and files)
 
 ### Files Description
-- The .sh files can be executed independently...
+- The .sh files can be executed independently as well as through the menus...
 > eg: `bash install.sh` or `bash install.sh php` to install immediately
 + **/html**                   - Directory containing template html for custom index.html
 + **/tests**                  - Directory containing some test files used with *demo.sh*
