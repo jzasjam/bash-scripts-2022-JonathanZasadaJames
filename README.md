@@ -38,6 +38,6 @@ Place the downloaded directory on your machine in an easy to access directory
 + **reset.sh**                - Removes all LAMP(+Wordpress) packages, files and databases.
 + **send-email.sh**           - Send an email to a chosen address (via SMTP connection)
 + **service-status.sh**       - Get the latest status, start, stop and restart for Apache and MariaDB
-+ **ssmpt.conf.template**     - Template used with replaced values of user provided SMTP condiguration
++ **ssmpt.conf.template**     - Template used with replaced values of user provided SMTP configuration
 + **system-status.sh**        - System, Service, User and Database stats
 + **task3.sh**                - Main menu script to guide user
