@@ -30,6 +30,7 @@ COLOR='\033[0m' # No Color
             echo "Apache Is Not Installed"
         else
             status=0
+            # Check status in different ways depending on OS for different output
             if ! command -v systemctl &> /dev/null
             then
                 #sudo systemctl status apache2
@@ -77,7 +78,7 @@ COLOR='\033[0m' # No Color
             echo "MariaDB Not Installed"
         else
             status=0
-            
+            # Check status in different ways depending on OS for different output 
             if [ ! command -v systemctl &> /dev/null ] 
             then
                 #sudo systemctl status mariadb

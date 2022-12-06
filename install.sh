@@ -119,13 +119,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                 echo "-------------------"
                 sudo mysql_secure_installation
                 # After mysql_secure_installation install restart
-                if ! command -v systemctl &> /dev/null
-                then
-                    sudo systemctl restart mariadb
-                else
-                    # ON WSL
-                    sudo service mysql restart
-                fi
+                sudo bash service-status.sh restart mariadb
 
                 # Display confirmation and version/status
                 clear
@@ -302,13 +296,7 @@ task=$(echo $task | tr '[:upper:]' '[:lower:]')
                     echo "y" | sudo apt install ghostscript libapache2-mod-php php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip
                     
                     # Restart Apache 
-                    if ! command -v systemctl &> /dev/null
-                    then
-                        sudo systemctl restart apache2
-                    else
-                        # ON WSL
-                        sudo service apache2 restart
-                    fi
+                    sudo bash service-status.sh restart apache
 
                     clear
                     echo -e "\n==================="
