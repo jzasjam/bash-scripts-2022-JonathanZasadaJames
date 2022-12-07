@@ -644,7 +644,7 @@ fi
             do
                 SHOW_COLUMNS
                 echo -e "\n----------------------"
-                echo "> Which Column To Select Data From?"
+                echo "> Which Column(s) To Select Data From (separated by commas)?"
                 read column_name
                 if [ "$column_name" != "" ]; 
                 then
